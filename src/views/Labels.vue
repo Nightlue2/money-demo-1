@@ -1,8 +1,5 @@
 <template>
-  <div>
-    labels
-    <Nav />
-  </div>
+  <Layout>Labels</Layout>
 </template>
 
 <script>
@@ -12,5 +9,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
