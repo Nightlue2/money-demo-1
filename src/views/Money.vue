@@ -1,11 +1,9 @@
-
 <template>
-  <Layout>Money</Layout>
+    <Layout>Money</Layout>
 </template>
 
 <script>
 export default {
-  name: "Money"
+    name: "Money"
 };
 </script>
-
