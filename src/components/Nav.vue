@@ -1,12 +1,12 @@
 <template>
   <nav class="nav">
-    <router-link to="labels" class="item">
+    <router-link to="labels" class="item" active-class="selected">
       <Icon name="label" />标签
     </router-link>
-    <router-link to="/money" class="item">
+    <router-link to="/money" class="item" active-class="selected">
       <Icon name="money" />记账
     </router-link>
-    <router-link to="statistics" class="item">
+    <router-link to="statistics" class="item" active-class="selected">
       <Icon name="chart" />统计
     </router-link>
   </nav>
@@ -35,6 +35,9 @@ export default {
       width: 32px;
       height: 32px;
     }
+  }
+  > .selected {
+    color: red; //这里是整个页面的主题色
   }
 }
 </style>

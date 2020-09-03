@@ -13,7 +13,13 @@ module.exports = {
             .use("svg-sprite-loader")
             .loader("svg-sprite-loader")
             .options({ extract: false })
-            .end();
+            .end()
+            .use("svgo-loader")
+            .loader("svgo-loader")
+            .tap(options => ({
+                ...options,
+                plugins: [{ removeAttrs: { attrs: "fill" } }] //删除svg中的fill属性
+            }));
         config
             .plugin("svg-sprite")
             .use(require("svg-sprite-loader/plugin.js"), [
