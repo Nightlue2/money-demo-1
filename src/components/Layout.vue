@@ -15,14 +15,13 @@ export default {
 <style lang="scss" scoped>
 .nav-wrapper {
   display: flex;
-
   height: 100vh;
   flex-direction: column;
 }
 .content {
   flex-grow: 1;
   overflow: auto;
-
   display: flex;
+  flex-direction: column;
 }
 </style>
