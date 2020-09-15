@@ -1,28 +1,8 @@
 <template>
-  <Layout>
-    <div class="tags">
-      <ul class="current">
-        <li>衣</li>
-        <li>食</li>
-        <li>住</li>
-        <li>行</li>
-      </ul>
-      <div class="new">
-        <button>新增标签</button>
-      </div>
-    </div>
-    <div>
-      <label class="notes">
-        <span class="name">备注</span>
-        <input type="text" placeholder="在这里输入备注" />
-      </label>
-    </div>
-    <div>
-      <ul class="types">
-        <li class="selected">支出</li>
-        <li>收入</li>
-      </ul>
-    </div>
+  <Layout class-prefix="layout">
+    
+    
+    
     <div class="numberPad">
       <div class="output">0</div>
       <div class="buttonList">
@@ -42,6 +22,31 @@
         <button>.</button>
       </div>
     </div>
+    <div>
+      <ul class="types">
+        <li class="selected">支出</li>
+        <li>收入</li>
+      </ul>
+    </div>
+    <div>
+      <label class="notes">
+        <span class="name">备注</span>
+        <input type="text" placeholder="在这里输入备注" />
+      </label>
+    </div>
+    <div class="tags">
+      <div class="new">
+        <button>新增标签</button>
+      </div>
+      <ul class="current">
+        <li>衣</li>
+        <li>食</li>
+        <li>住</li>
+        <li>行</li>
+        
+      </ul>
+      
+    </div>
   </Layout>
 </template>
 
@@ -51,14 +56,25 @@ export default {
 };
 </script>
 
+<style lang="scss">
+.layout-content{
+  border:1px solid red;
+  display: flex;
+  flex-direction: column-reverse;
+}
+</style>
+
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .tags {
   font-size: 14px;
   padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column-reverse;
   > .current {
     display: flex;
-
+    flex-wrap: wrap;
     > li {
       background: #d9d9d9;
       $height: 24px;
@@ -67,6 +83,7 @@ export default {
       border-radius: $height/2;
       padding: 0 16px;
       margin-right: 12px; //分离li标签
+      margin-top:4px;
     }
   }
   > .new {
@@ -125,11 +142,12 @@ export default {
 }
 .numberPad {
   .output {
+    @extend %clearFix;
+    @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
-    box-shadow: inset 0 -3px 5px -5px fade-out(black, 0.5);
   }
   .buttonList {
     @extend %clearFix; //相当于将该选择器复制到%x中
@@ -139,6 +157,7 @@ export default {
       float: left;
       background: transparent;
       border: none;
+      border-radius: 0;
       &.ok {
         height: 64 * 2px;
         float: right;
