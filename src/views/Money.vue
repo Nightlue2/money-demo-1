@@ -1,26 +1,55 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad/>
-    <Types />
-    <Notes/>
-    <Tags :data-source.sync="tags"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+    <Types :value.sync="record.type" /> <!-- :value和@update:value可以合并成.sync -->
+    <Notes @update:value="onUpdateNotes"/>
+    <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
   </Layout>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import NumberPad from "@/components/NumberPad.vue";
 import Types from "@/components/Types.vue";
 import Notes from "@/components/Notes.vue";
 import Tags from "@/components/Tags.vue";
-export default {
-  name: "Money",
-  components:{Tags,NumberPad,Notes,Types},
-  data(){
-    return {
-      tags:['衣','食','住','行']
-    }
+import {Component, Watch} from 'vue-property-decorator';
+type Record = {
+  tags: string[];
+  notes: string;
+  type: string;
+  amount: number;
+  createdAt?: Date;
+}
+@Component({//ts语法
+  components:{Tags,NumberPad,Notes,Types}
+})
+export default class Money extends Vue {
+  tags = ['衣','食','住','行'];
+  recordList: Record[] = JSON.parse(localStorage.getItem('recordList') || '[]');
+  record: Record = {
+    tags:[],notes:'',type:'-',amount:0
   }
-};
+  onUpdateTags(value: string[]){
+    this.record.tags = value;
+  }
+  onUpdateNotes(value: string){
+    this.record.notes = value;
+  }
+  onUpdateAmount(value: string){
+    this.record.amount = parseFloat(value);
+  }
+
+  saveRecord(){
+    const record2 = JSON.parse(JSON.stringify(this.record));
+    record2.createdAt = new Date();
+    this.recordList.push(record2);
+  }
+  @Watch('recordList')
+  onRecordListChange(){
+    localStorage.setItem('recordList',JSON.stringify(this.recordList))
+  }
+}
 </script>
 
 <style lang="scss">
