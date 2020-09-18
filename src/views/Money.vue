@@ -1,5 +1,6 @@
 <template>
   <Layout class-prefix="layout">
+    {{ recordList }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type" /> <!-- :value和@update:value可以合并成.sync -->
     <Notes @update:value="onUpdateNotes"/>
@@ -14,20 +15,18 @@ import Types from "@/components/Types.vue";
 import Notes from "@/components/Notes.vue";
 import Tags from "@/components/Tags.vue";
 import {Component, Watch} from 'vue-property-decorator';
-type Record = {
-  tags: string[];
-  notes: string;
-  type: string;
-  amount: number;
-  createdAt?: Date;
-}
+
+const model = require('@/model.js').model;
+const recordList: RecordItem[]=model.fetch();
+console.log(recordList);
+
 @Component({//ts语法
   components:{Tags,NumberPad,Notes,Types}
 })
 export default class Money extends Vue {
   tags = ['衣','食','住','行'];
-  recordList: Record[] = JSON.parse(localStorage.getItem('recordList') || '[]');
-  record: Record = {
+  recordList: RecordItem[] = recordList;
+  record: RecordItem = {
     tags:[],notes:'',type:'-',amount:0
   }
   onUpdateTags(value: string[]){
