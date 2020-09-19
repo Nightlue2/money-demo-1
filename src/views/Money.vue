@@ -1,58 +1,63 @@
 <template>
   <Layout class-prefix="layout">
     {{ recordList }}
-    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Types :value.sync="record.type" /> <!-- :value和@update:value可以合并成.sync -->
-    <Notes @update:value="onUpdateNotes"/>
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
+    <Types :value.sync="record.type" />
+    <!-- :value和@update:value可以合并成.sync -->
+    <Notes @update:value="onUpdateNotes" />
+    <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
   </Layout>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 import NumberPad from "@/components/NumberPad.vue";
 import Types from "@/components/Types.vue";
 import Notes from "@/components/Notes.vue";
 import Tags from "@/components/Tags.vue";
-import {Component, Watch} from 'vue-property-decorator';
+import { Component, Watch } from "vue-property-decorator";
+import { model } from "@/model";
 
-const model = require('@/model.js').model;
-const recordList: RecordItem[]=model.fetch();
-console.log(recordList);
+// const model = require('@/model.ts').model;
+const recordList = model.fetch();
 
-@Component({//ts语法
-  components:{Tags,NumberPad,Notes,Types}
+@Component({
+  //ts语法
+  components: { Tags, NumberPad, Notes, Types },
 })
 export default class Money extends Vue {
-  tags = ['衣','食','住','行'];
+  tags = ["衣", "食", "住", "行"];
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
-    tags:[],notes:'',type:'-',amount:0
-  }
-  onUpdateTags(value: string[]){
+    tags: [],
+    notes: "",
+    type: "-",
+    amount: 0,
+  };
+  onUpdateTags(value: string[]) {
     this.record.tags = value;
   }
-  onUpdateNotes(value: string){
+  onUpdateNotes(value: string) {
     this.record.notes = value;
   }
-  onUpdateAmount(value: string){
+  onUpdateAmount(value: string) {
     this.record.amount = parseFloat(value);
   }
 
-  saveRecord(){
-    const record2 = JSON.parse(JSON.stringify(this.record));
+  saveRecord() {
+    const record2 = model.clone(this.record);
     record2.createdAt = new Date();
     this.recordList.push(record2);
   }
-  @Watch('recordList')
-  onRecordListChange(){
-    localStorage.setItem('recordList',JSON.stringify(this.recordList))
+  @Watch("recordList")
+  onRecordListChange() {
+    model.save(this.recordList);
   }
 }
 </script>
 
 <style lang="scss">
-.layout-content{
+.layout-content {
   display: flex;
   flex-direction: column-reverse;
 }
