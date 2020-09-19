@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ recordList }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <!-- :value和@update:value可以合并成.sync -->
@@ -16,11 +15,10 @@ import Types from "@/components/Types.vue";
 import Notes from "@/components/Notes.vue";
 import Tags from "@/components/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
-import { model } from "@/model";
-
-// const model = require('@/model.ts').model;
-const recordList = model.fetch();
-
+import recordListModel from "@/models/recordListModel";
+import tagListModel from "@/models/tagListModel";
+const recordList = recordListModel.fetch();
+const tagList = tagListModel.fetch();
 @Component({
   //ts语法
   components: { Tags, NumberPad, Notes, Types },
@@ -45,13 +43,13 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const record2 = model.clone(this.record);
+    const record2 = recordListModel.clone(this.record);
     record2.createdAt = new Date();
     this.recordList.push(record2);
   }
   @Watch("recordList")
   onRecordListChange() {
-    model.save(this.recordList);
+    recordListModel.save(this.recordList);
   }
 }
 </script>

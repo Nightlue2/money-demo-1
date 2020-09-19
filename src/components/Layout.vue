@@ -10,7 +10,7 @@
 <script lang="ts">
 export default {
   name: "Layout",
-  props:['classPrefix']
+  props: ["classPrefix"],
 };
 </script>
 <style lang="scss" scoped>
@@ -22,7 +22,5 @@ export default {
 .content {
   flex-grow: 1;
   overflow: auto;
-  display: flex;
-  
 }
 </style>
