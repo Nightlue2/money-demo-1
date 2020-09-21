@@ -1,5 +1,3 @@
-import Labels from '@/views/Labels.vue';
-
 <template>
   <Layout>
     <div class="tags">
@@ -9,7 +7,7 @@ import Labels from '@/views/Labels.vue';
       </router-link>
     </div>
     <div class="createTag-wrapper">
-      <button class="createTag" @click="createTag">新建标签</button>
+      <Button class="createTag" @click="createTag">新增标签</Button>
     </div>
   </Layout>
 </template>

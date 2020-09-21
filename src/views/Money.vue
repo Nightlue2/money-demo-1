@@ -3,7 +3,10 @@
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <!-- :value和@update:value可以合并成.sync -->
-    <Notes field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes" />
+    <div class="notes">
+      <FormItem field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes" />
+    </div>
+
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
   </Layout>
 </template>
@@ -12,7 +15,7 @@
 import Vue from "vue";
 import NumberPad from "@/components/NumberPad.vue";
 import Types from "@/components/Types.vue";
-import EditItem from "@/components/EditItem.vue";
+import FormItem from "@/components/FormItem.vue";
 import Tags from "@/components/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
 import recordListModel from "@/models/recordListModel";
@@ -21,7 +24,7 @@ const recordList = recordListModel.fetch();
 const tagList = tagListModel.fetch();
 @Component({
   //ts语法
-  components: { Tags, NumberPad, EditItem, Types },
+  components: { Tags, NumberPad, FormItem, Types },
 })
 export default class Money extends Vue {
   tags = tagList;
@@ -58,6 +61,10 @@ export default class Money extends Vue {
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
+}
+.notes {
+  padding: 12px 0;
+  background-color: #f5f5f5;
 }
 </style>
 
