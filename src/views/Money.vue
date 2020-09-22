@@ -21,13 +21,13 @@ import { Component, Watch } from "vue-property-decorator";
 import recordListModel from "@/models/recordListModel";
 import tagListModel from "@/models/tagListModel";
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
+
 @Component({
   //ts语法
   components: { Tags, NumberPad, FormItem, Types },
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
     tags: [],
@@ -37,6 +37,7 @@ export default class Money extends Vue {
   };
   onUpdateTags(value: string[]) {
     this.record.tags = value;
+    console.log("a" + value);
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
