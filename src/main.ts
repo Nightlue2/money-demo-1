@@ -7,12 +7,18 @@ import Nav from "@/components/Nav.vue"; //引入Nav导航栏
 import Layout from "@/components/Layout.vue"; //把导航栏的共同部分抽离
 import Icon from "@/components/Icon.vue"; //把svg部分抽离
 import tagListModel from "@/models/tagListModel";
+import recordListModel from "@/models/recordListModel";
 Vue.config.productionTip = false;
 
 Vue.component("Nav", Nav); //全局引入组件，这样其他视图就不需要一个个引入
 Vue.component("Layout", Layout);
 Vue.component("Icon", Icon);
 
+//record store
+window.recordList = recordListModel.fetch();
+window.createRecord = (record: RecordItem) => recordListModel.create(record);
+
+//tag store
 window.tagList = tagListModel.fetch();
 window.createTag = (name) => {
   const message = tagListModel.create(name);
