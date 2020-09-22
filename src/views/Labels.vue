@@ -20,14 +20,9 @@ import tagListModel from "@/models/tagListModel";
 export default class Labels extends Vue {
   tags = window.tagList;
   createTag() {
-    const name = prompt("输出标签名");
+    const name = prompt("请输出标签名");
     if (name) {
-      const message = tagListModel.create(name);
-      if (message === "duplicated") {
-        alert("标签名重复");
-      } else if (message === "success") {
-        alert("添加成功");
-      }
+      window.createTag(name);
     }
   }
 }
