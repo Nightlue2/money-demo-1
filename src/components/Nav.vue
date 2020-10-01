@@ -37,7 +37,7 @@ export default {
       height: 32px;
     }
   }
-  > .selected {
+  > .item.selected {
     color: $color-highlight; //这里是整个页面的主题色
   }
 }
