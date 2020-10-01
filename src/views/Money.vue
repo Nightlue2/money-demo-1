@@ -4,10 +4,13 @@
     <Types :value.sync="record.type" />
     <!-- :value和@update:value可以合并成.sync -->
     <div class="notes">
-      <FormItem field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes" />
+      <FormItem
+        field-name="备注"
+        placeholder="在这里输入备注"
+        @update:value="onUpdateNotes"
+      />
     </div>
-
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
+    <Tags />
   </Layout>
 </template>
 
@@ -18,36 +21,29 @@ import Types from "@/components/Types.vue";
 import FormItem from "@/components/FormItem.vue";
 import Tags from "@/components/Tags.vue";
 import { Component } from "vue-property-decorator";
-import recordListModel from "@/models/recordListModel";
-
-const recordList = recordListModel.fetch();
 
 @Component({
   //ts语法
   components: { Tags, NumberPad, FormItem, Types },
 })
 export default class Money extends Vue {
-  tags = window.tagList;
-  recordList = window.recordList;
+  get recordList() {
+    return this.$store.state.recordList;
+  }
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
-    console.log("a" + value);
+  created() {
+    this.$store.commit("fetchRecords");
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
-  onUpdateAmount(value: string) {
-    this.record.amount = parseFloat(value);
-  }
-
   saveRecord() {
-    window.createRecord(this.record);
+    this.$store.commit("createRecord", this.record);
   }
 }
 </script>
