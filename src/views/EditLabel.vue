@@ -1,5 +1,5 @@
 <template>
-  <Layout style="background-color: #f5f5f5">
+  <Layout>
     <div class="navBar">
       <Icon name="back" class="leftIcon" @click.native="goBack"></Icon>
       <!--回退功能有bug -->
@@ -66,8 +66,7 @@ export default class EditLabel extends Vue {
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  > .title {
-  }
+
   > .leftIcon {
     width: 24px;
     height: 24px;

@@ -5,7 +5,9 @@
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
-      <button @click="remove">删除</button>
+      <button @click="remove">
+        <Icon name="backspace" class="icon" id="icon-backspace" />
+      </button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
@@ -29,7 +31,6 @@ export default class NumberPad extends Vue {
 
   output = this.value.toString();
   inputContent(event: MouseEvent) {
-    console.log(typeof this.output);
     const button = event.target as HTMLButtonElement;
     const input = button.textContent!;
     if (this.output.length === 16) {
@@ -70,7 +71,19 @@ export default class NumberPad extends Vue {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-
+// ::v-deep {
+//   #icon-backspace {
+//     width: 32px;
+//     height: 32px;
+//   }
+// }
+::v-deep {
+  .icon {
+    width: 100px;
+    height: 100px;
+    border: 1px solid red;
+  }
+}
 .numberPad {
   .output {
     @extend %clearFix;
@@ -97,7 +110,7 @@ export default class NumberPad extends Vue {
       &.zero {
         width: 25 * 2%;
       }
-      $bg: #f2f2f2;
+      $bg: #f8f3e7;
       &:nth-child(1) {
         background: $bg;
       }
@@ -108,23 +121,25 @@ export default class NumberPad extends Vue {
       &:nth-child(3),
       &:nth-child(6),
       &:nth-child(9) {
-        background: darken($bg, 4 * 2%);
+        background: darken($bg, 4%+4%);
       }
       &:nth-child(4),
       &:nth-child(7),
       &:nth-child(10) {
-        background: darken($bg, 4 * 3%);
+        background: darken($bg, 4%+9%);
       }
       &:nth-child(8),
       &:nth-child(11),
       &:nth-child(13) {
-        background: darken($bg, 4 * 4%);
+        background: darken($bg, 4%+13%);
       }
       &:nth-child(14) {
-        background: darken($bg, 4 * 5%);
+        background: darken($bg, 4%+17%);
       }
       &:nth-child(12) {
-        background: darken($bg, 4 * 6%);
+        // background: darken($bg, 4 * 6%);
+        background-color: #ffb01f;
+        filter: grayscale(40%);
       }
     }
   }
