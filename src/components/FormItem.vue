@@ -1,7 +1,7 @@
 <template>
   <div>
     <label class="formItem">
-      <span class="name">{{ this.fieldName }}</span>
+      <Icon class="name" name="备注" />
       <input
         type="text"
         :value="value"
@@ -18,8 +18,6 @@ import { Component, Prop } from "vue-property-decorator";
 export default class FormItem extends Vue {
   @Prop({ default: "" }) readonly value!: string;
   @Prop() placeholder?: string;
-  @Prop({ required: true })
-  fieldName!: string;
   onValueChanged(value: string) {
     this.$emit("update:value", value);
   }
@@ -32,11 +30,13 @@ export default class FormItem extends Vue {
   padding-left: 16px;
   align-items: center;
   .name {
+    width: 22px;
+    height: 22px;
     vertical-align: bottom;
-    padding-right: 16px;
+    margin-right: 8px;
   }
   input {
-    height: 40px;
+    height: 26px;
     flex-grow: 1;
     background: transparent;
     border: none;

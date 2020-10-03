@@ -1,16 +1,17 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Tabs :value.sync="record.type" :data-source="recordTypeList" />
+
     <!-- :value和@update:value可以合并成.sync -->
     <div class="notes">
-      <FormItem
-        field-name="备注"
-        placeholder="在这里输入备注"
-        @update:value="onUpdateNotes"
-      />
+      <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" />
     </div>
     <Tags />
+    <Tabs
+      :value.sync="record.type"
+      :data-source="recordTypeList"
+      :distance="distance"
+    />
   </Layout>
 </template>
 
@@ -20,23 +21,26 @@ import NumberPad from "@/components/NumberPad.vue";
 import Tabs from "@/components/Tabs.vue";
 import FormItem from "@/components/FormItem.vue";
 import Tags from "@/components/Tags.vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
+
 @Component({
   //ts语法
   components: { Tags, NumberPad, FormItem, Tabs },
 })
 export default class Money extends Vue {
   get recordList() {
+    //从store里获取recordList
     return this.$store.state.recordList;
   }
-  recordTypeList = recordTypeList;
+  distance = 0;
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
+  recordTypeList = recordTypeList;
   created() {
     this.$store.commit("fetchRecords");
   }
@@ -46,10 +50,27 @@ export default class Money extends Vue {
   saveRecord() {
     this.$store.commit("createRecord", this.record);
   }
+  @Watch("record")
+  onRecordChanged(newVal: RecordItem, oldVal: RecordItem) {
+    let newIndex = 0,
+      oldIndex = 0;
+    for (let i = 0; i < recordTypeList.length; i++) {
+      if (recordTypeList[i].value === newVal.type) {
+        newIndex = recordTypeList[i].index;
+        continue;
+      }
+      if (recordTypeList[i].value === oldVal.type) {
+        oldIndex = recordTypeList[i].index;
+        continue;
+      }
+    }
+    this.distance = newIndex - oldIndex;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
@@ -58,8 +79,4 @@ export default class Money extends Vue {
   padding: 12px 0;
   background-color: #f5f5f5;
 }
-</style>
-
-<style lang="scss" scoped>
-@import "~@/assets/style/helper.scss";
 </style>

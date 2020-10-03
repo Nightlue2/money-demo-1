@@ -6,7 +6,7 @@
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
       <button @click="remove">
-        <Icon name="backspace" class="icon" id="icon-backspace" />
+        <Icon name="backspace" id="icon-backspace" />
       </button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
@@ -71,23 +71,17 @@ export default class NumberPad extends Vue {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-// ::v-deep {
-//   #icon-backspace {
-//     width: 32px;
-//     height: 32px;
-//   }
-// }
 ::v-deep {
-  .icon {
-    width: 100px;
-    height: 100px;
-    border: 1px solid red;
+  #icon-backspace {
+    width: 34px;
+    height: 34px;
+    vertical-align: middle;
   }
 }
+
 .numberPad {
   .output {
     @extend %clearFix;
-    @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monospace;
     padding: 9px 16px;

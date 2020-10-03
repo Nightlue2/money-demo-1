@@ -10,6 +10,10 @@
       >
         {{ item.text }}
       </li>
+      <div
+        class="bottomBar"
+        :style="`transform: translateX(${distance}*100%);`"
+      ></div>
     </ul>
   </div>
 </template>
@@ -23,6 +27,7 @@ export default class Tabs extends Vue {
   @Prop(String) classPrefix?: string;
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
   @Prop({ type: String, default: "64px" }) height!: string;
+  @Prop({ required: true, type: Number }) distance!: number;
 
   liClass(item: DataSourceItem) {
     return {
@@ -36,27 +41,37 @@ export default class Tabs extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
 .tabs {
-  background: #c4c4c4;
   display: flex;
   text-align: center;
+  justify-content: center;
+
   &-item {
-    width: 50%;
+    width: 25%;
+    color: #999;
     height: 64px;
     font-size: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    &.selected::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: #333;
+    &.selected {
+      color: $color-theme;
     }
   }
+  > .bottomBar {
+    position: absolute;
+    top: 64px;
+    left: 25%;
+    width: 25%;
+    height: 4px;
+    background: $color-theme;
+    transition: transform 1.2s linear;
+    // transform: translateX(this.$distance * 25%);
+  }
+  // > .move {
+
+  // }
 }
 </style>
