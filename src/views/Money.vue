@@ -6,11 +6,11 @@
     <div class="notes">
       <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" />
     </div>
-    <Tags />
+    <Tags class="overflow" />
     <Tabs
-      :value.sync="record.type"
+      :value.sync="type"
       :data-source="recordTypeList"
-      :distance="distance"
+      :distance.sync="distance"
     />
   </Layout>
 </template>
@@ -34,10 +34,12 @@ export default class Money extends Vue {
     return this.$store.state.recordList;
   }
   distance = 0;
+  h = document.body.clientHeight / 2;
+  type = "-";
   record: RecordItem = {
     tags: [],
     notes: "",
-    type: "-",
+    type: this.type,
     amount: 0,
   };
   recordTypeList = recordTypeList;
@@ -50,21 +52,25 @@ export default class Money extends Vue {
   saveRecord() {
     this.$store.commit("createRecord", this.record);
   }
-  @Watch("record")
-  onRecordChanged(newVal: RecordItem, oldVal: RecordItem) {
+  @Watch("type")
+  onTypeChange(newVal: string, oldVal: string) {
+    console.log("asdd");
     let newIndex = 0,
       oldIndex = 0;
     for (let i = 0; i < recordTypeList.length; i++) {
-      if (recordTypeList[i].value === newVal.type) {
+      if (recordTypeList[i].value === newVal) {
         newIndex = recordTypeList[i].index;
+        console.log(newIndex);
         continue;
       }
-      if (recordTypeList[i].value === oldVal.type) {
+      if (recordTypeList[i].value === oldVal) {
         oldIndex = recordTypeList[i].index;
+        console.log(oldIndex);
         continue;
       }
     }
-    this.distance = newIndex - oldIndex;
+    console.log(newIndex - oldIndex);
+    this.distance = this.distance + 100 * (newIndex - oldIndex);
   }
 }
 </script>
@@ -78,5 +84,8 @@ export default class Money extends Vue {
 .notes {
   padding: 12px 0;
   background-color: #f5f5f5;
+}
+::v-deep .overflow {
+  overflow: scroll-y;
 }
 </style>

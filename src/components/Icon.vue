@@ -9,6 +9,7 @@ const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
   requireContext.keys().forEach(requireContext);
 try {
   importAll(require.context("../assets/icon-svg", true, /\.svg$/));
+  importAll(require.context("../assets/label-svg", true, /\.svg$/));
 } catch (error) {
   console.log(error);
 }
@@ -19,11 +20,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
-  fill: currentColor;
+  fill: $color-font;
   overflow: hidden;
 }
 </style>

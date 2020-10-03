@@ -37,8 +37,13 @@ export default {
       height: 32px;
     }
   }
-  > .item.selected {
-    color: $color-highlight; //这里是整个页面的主题色
+}
+::v-deep {
+  .item.selected {
+    color: $color-theme;
+    > svg {
+      fill: currentColor;
+    }
   }
 }
 </style>

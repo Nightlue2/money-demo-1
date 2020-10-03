@@ -11,10 +11,12 @@
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #333;
+  color: $color-font;
   font-family: $font-hei;
   line-height: 1.5;
   font-size: 16px;
-  background: #fff;
+  background: #fbfaf8;
+  max-width: 600px;
+  margin: 0 auto;
 }
 </style>

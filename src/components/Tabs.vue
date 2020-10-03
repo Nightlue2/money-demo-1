@@ -12,7 +12,7 @@
       </li>
       <div
         class="bottomBar"
-        :style="`transform: translateX(${distance}*100%);`"
+        :style="`transform: translateX(${distance}%);`"
       ></div>
     </ul>
   </div>
@@ -27,7 +27,7 @@ export default class Tabs extends Vue {
   @Prop(String) classPrefix?: string;
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
   @Prop({ type: String, default: "64px" }) height!: string;
-  @Prop({ required: true, type: Number }) distance!: number;
+  @Prop(Number) distance!: number;
 
   liClass(item: DataSourceItem) {
     return {
@@ -46,28 +46,37 @@ export default class Tabs extends Vue {
   display: flex;
   text-align: center;
   justify-content: center;
-
+  padding-top: 15px;
+  flex-flow: row wrap;
+  // background-color: $color-bg;
+  background-color: $color-bg;
+  border-bottom: 1px solid #eee;
   &-item {
     width: 25%;
     color: #999;
-    height: 64px;
-    font-size: 24px;
+    height: 61px;
+    font-size: 22px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    position: relative;
+    justify-content: center;
     &.selected {
       color: $color-theme;
+      background-image: linear-gradient($color-bg, $color-light);
     }
   }
+  &-item:nth-child(1) {
+    margin-left: 25%;
+  }
+  &-item:nth-child(2) {
+    margin-right: 25%;
+  }
   > .bottomBar {
-    position: absolute;
-    top: 64px;
-    left: 25%;
     width: 25%;
-    height: 4px;
+    height: 3px;
+    margin-left: -24%;
+    margin-top: -3px;
     background: $color-theme;
-    transition: transform 1.2s linear;
+    transition: transform 0.38s ease-in-out;
     // transform: translateX(this.$distance * 25%);
   }
   // > .move {
