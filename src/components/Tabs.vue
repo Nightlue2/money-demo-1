@@ -48,7 +48,6 @@ export default class Tabs extends Vue {
   justify-content: center;
   padding-top: 15px;
   flex-flow: row wrap;
-  // background-color: $color-bg;
   background-color: $color-bg;
   border-bottom: 1px solid #eee;
   &-item {
@@ -73,14 +72,10 @@ export default class Tabs extends Vue {
   > .bottomBar {
     width: 25%;
     height: 3px;
-    margin-left: -24%;
+    margin-right: 25%;
     margin-top: -3px;
     background: $color-theme;
     transition: transform 0.38s ease-in-out;
-    // transform: translateX(this.$distance * 25%);
   }
-  // > .move {
-
-  // }
 }
 </style>
