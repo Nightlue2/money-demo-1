@@ -20,7 +20,7 @@
       <Button class="createTag" >新增标签</Button>
     </div> -->
     <div class="labelList">
-      <button class="label" @click="select($event)">
+      <!-- <button class="label" @click="select($event)">
         <Icon name="餐饮" class="littleLabel"></Icon
         ><span class="labelNote">餐饮</span>
       </button>
@@ -71,6 +71,11 @@
       <button class="label" @click="select($event)">
         <Icon name="转账" class="littleLabel"></Icon
         ><span class="labelNote">转账</span>
+      </button> -->
+      <button class="label" v-for="item in tags" :key="item.id">
+        <Icon :name="item.name" class="littleLabel" /><span class="labelNote">{{
+          item.name
+        }}</span>
       </button>
       <button class="label" @click="createTag">
         <Icon name="添加" class="littleLabel" />
@@ -107,16 +112,15 @@ export default class Labels extends mixins(TagHelper) {
   beforeCreate() {
     this.$store.commit("fetchTags");
   }
-  select($event: MouseEvent) {
-    if ($event.target) {
-      if ($event.target.children) {
-        console.log($event.target.children[0]);
-      }
-    }
-  }
+  // select($event: MouseEvent) {
+  //   if ($event.target) {
+  //     if ($event.target.children) {
+  //       console.log($event.target.children[0]);
+  //     }
+  //   }
+  // }
   @Watch("type", { deep: true })
   onTypeChange(newVal: string, oldVal: string) {
-    console.log("asdd");
     let newIndex = 0,
       oldIndex = 0;
     for (let i = 0; i < recordTypeList.length; i++) {
@@ -131,7 +135,6 @@ export default class Labels extends mixins(TagHelper) {
         continue;
       }
     }
-    console.log(newIndex - oldIndex);
     this.distance = this.distance + 100 * (newIndex - oldIndex);
   }
 }

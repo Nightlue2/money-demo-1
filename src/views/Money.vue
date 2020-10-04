@@ -54,7 +54,6 @@ export default class Money extends Vue {
   }
   @Watch("type")
   onTypeChange(newVal: string, oldVal: string) {
-    console.log("asdd");
     let newIndex = 0,
       oldIndex = 0;
     for (let i = 0; i < recordTypeList.length; i++) {
@@ -69,7 +68,6 @@ export default class Money extends Vue {
         continue;
       }
     }
-    console.log(newIndex - oldIndex);
     this.distance = this.distance + 100 * (newIndex - oldIndex);
   }
 }

@@ -27,7 +27,11 @@ const store = new Vuex.Store({
       alert("添加成功");
     },
     fetchTags(state) {
-      state.tagList = JSON.parse(localStorage.getItem("tagList") || "[]");
+      state.tagList = JSON.parse(
+        localStorage.getItem("tagList") ||
+          '[{"id":0,"name":"餐饮"},{"id":1,"name":"交通"},{"id":2,"name":"购物"},{"id":3,"name":"电影"},{"id":4,"name":"外卖"},{"id":5,"name":"健身"},{"id":6,"name":"水费"},{"id":7,"name":"电费"},{"id":8,"name":"旅游"},{"id":9,"name":"日用品"},{"id":10,"name":"数码"},{"id":11,"name":"医疗"},{"id":12,"name":"转账"}]'
+      );
+      console.log(state.tagList);
     },
     updateTag(state, payload: { id: string; name: string }) {
       const { id, name } = payload;
