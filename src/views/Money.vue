@@ -59,12 +59,10 @@ export default class Money extends Vue {
     for (let i = 0; i < recordTypeList.length; i++) {
       if (recordTypeList[i].value === newVal) {
         newIndex = recordTypeList[i].index;
-        console.log(newIndex);
         continue;
       }
       if (recordTypeList[i].value === oldVal) {
         oldIndex = recordTypeList[i].index;
-        console.log(oldIndex);
         continue;
       }
     }

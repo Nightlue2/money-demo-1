@@ -57,25 +57,6 @@ export default class EditLabel extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.navBar {
-  text-align: center;
-  font-size: 16px;
-  padding: 12px 16px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-
-  > .leftIcon {
-    width: 24px;
-    height: 24px;
-  }
-  > .rightIcon {
-    width: 24px;
-    height: 24px;
-  }
-}
 .form-wrapper {
   background: white;
   margin-top: 8px;

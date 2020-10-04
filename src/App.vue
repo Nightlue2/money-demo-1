@@ -15,7 +15,7 @@
   font-family: $font-hei;
   line-height: 1.5;
   font-size: 16px;
-  background: #fbfaf8;
+  background: #fff;
   max-width: 600px;
   margin: 0 auto;
 }

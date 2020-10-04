@@ -1,6 +1,6 @@
 type RootState = {
   recordList: RecordItem[];
-  tagList: Tag[];
+  tagList: string[];
   currentTag?: Tag;
 };
 type RecordItem = {
@@ -10,10 +10,7 @@ type RecordItem = {
   amount: number; //多少金额
   createdAt?: string; //提交时间
 };
-type Tag = {
-  id: string; //标识tag的唯一性
-  name: string; //标签的名字
-};
+type Tag = string;
 type TagListModel = {
   data: Tag[];
   fetch: () => Tag[];

@@ -17,7 +17,6 @@ export default {
   name: "Icon",
   props: ["name"],
 };
-console.log(name);
 </script>
 
 <style lang="scss" scoped>

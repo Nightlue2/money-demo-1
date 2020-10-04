@@ -1,12 +1,34 @@
 <template>
-  <Layout>
-    <Tabs
-      :value.sync="type"
-      :data-source="recordTypeList"
-      :distance.sync="distance"
-    />
-    <div class="tags">
-      <!-- <router-link
+  <div class="labelWrapper">
+    <div class="navBar">
+      <Icon name="back" class="leftIcon" @click.native="goBack"></Icon>
+      <span class="title">{{ tip }}</span>
+      <button class="default" :class="{ rightIcon: finish !== '' }">
+        {{ finish }}
+      </button>
+    </div>
+    <div class="labelList">
+      <button
+        class="label"
+        v-for="tagName in tags"
+        :key="tagName.index"
+        :class="{ selected: selectedTags.indexOf(tagName) >= 0 }"
+        @click="toggle(tagName)"
+      >
+        <Icon :name="tagName" class="littleLabel" id="selected" /><span
+          class="labelNote"
+          >{{ tagName }}</span
+        >
+      </button>
+      <button class="label" @click="createTag">
+        <Icon name="添加" class="littleLabel" />
+        <span class="labelNote">添加</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- <div class="tags">
+       <router-link
         class="tag"
         :to="`/labels/edit/${tag.id}`"
         v-for="tag in tags"
@@ -15,102 +37,53 @@
         <span>{{ tag.name }}</span>
         <Icon name="guide" />
       </router-link> -->
-    </div>
-    <!-- <div class="createTag-wrapper">
+  <!-- </div> -->
+  <!-- <div class="createTag-wrapper">
       <Button class="createTag" >新增标签</Button>
     </div> -->
-    <div class="labelList">
-      <!-- <button class="label" @click="select($event)">
-        <Icon name="餐饮" class="littleLabel"></Icon
-        ><span class="labelNote">餐饮</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="交通" class="littleLabel"></Icon
-        ><span class="labelNote">交通</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="购物" class="littleLabel"></Icon
-        ><span class="labelNote">购物</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="电影" class="littleLabel"></Icon
-        ><span class="labelNote">电影</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="外卖" class="littleLabel"></Icon
-        ><span class="labelNote">外卖</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="健身" class="littleLabel"></Icon
-        ><span class="labelNote">健身</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="水费" class="littleLabel"></Icon
-        ><span class="labelNote">水费</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="电费" class="littleLabel"></Icon
-        ><span class="labelNote">电费</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="旅游" class="littleLabel"></Icon
-        ><span class="labelNote">旅游</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="日用品" class="littleLabel"></Icon
-        ><span class="labelNote">日用品</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="数码" class="littleLabel"></Icon
-        ><span class="labelNote">数码</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="医疗" class="littleLabel"></Icon
-        ><span class="labelNote">医疗</span>
-      </button>
-      <button class="label" @click="select($event)">
-        <Icon name="转账" class="littleLabel"></Icon
-        ><span class="labelNote">转账</span>
-      </button> -->
-      <button class="label" v-for="item in tags" :key="item.id">
-        <Icon :name="item.name" class="littleLabel" /><span class="labelNote">{{
-          item.name
-        }}</span>
-      </button>
-      <button class="label" @click="createTag">
-        <Icon name="添加" class="littleLabel" />
-        <span class="labelNote">添加</span>
-      </button>
-    </div>
-  </Layout>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
 import Tabs from "@/components/Tabs.vue";
-import recordTypeList from "@/constants/recordTypeList";
 @Component({
   components: { Button, Tabs },
 })
 export default class Labels extends mixins(TagHelper) {
-  recordTypeList = recordTypeList;
-  type = "-";
-  record: RecordItem = {
-    tags: [],
-    notes: "",
-    type: this.type,
-    amount: 0,
-  };
-  distance = 0;
+  selectedTags: string[] = [];
+
   get tags() {
+    //computed写法
     return this.$store.state.tagList;
+  }
+  get tip() {
+    if (this.selectedTags.length) {
+      return "提交以展示";
+    } else {
+      return "选择至少一项";
+    }
+  }
+  get finish() {
+    if (this.selectedTags.length) {
+      return "完成";
+    } else {
+      return "";
+    }
   }
   beforeCreate() {
     this.$store.commit("fetchTags");
+  }
+  toggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index >= 0) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags.push(tag);
+    }
   }
   // select($event: MouseEvent) {
   //   if ($event.target) {
@@ -119,29 +92,15 @@ export default class Labels extends mixins(TagHelper) {
   //     }
   //   }
   // }
-  @Watch("type", { deep: true })
-  onTypeChange(newVal: string, oldVal: string) {
-    let newIndex = 0,
-      oldIndex = 0;
-    for (let i = 0; i < recordTypeList.length; i++) {
-      if (recordTypeList[i].value === newVal) {
-        newIndex = recordTypeList[i].index;
-        console.log(newIndex);
-        continue;
-      }
-      if (recordTypeList[i].value === oldVal) {
-        oldIndex = recordTypeList[i].index;
-        console.log(oldIndex);
-        continue;
-      }
-    }
-    this.distance = this.distance + 100 * (newIndex - oldIndex);
-  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+@import "~@/assets/style/reset.scss";
+.labelWrapper {
+  height: 100vh;
+}
 .tags {
   background: white;
   font-size: 16px;
@@ -171,29 +130,66 @@ export default class Labels extends mixins(TagHelper) {
 }
 .labelList {
   display: flex;
+  flex-grow: 1;
   width: 100%;
   flex-flow: row wrap;
   padding: 25px 14px 0px;
   > .label {
-    @extend %noButton;
+    &:visited {
+      background-color: transparent;
+      outline: none;
+      border: none;
+    }
+
     width: 25%;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
-    padding-top: 15px;
-
+    padding-top: 32px;
+    cursor: pointer;
     > .labelNote {
       font-size: 12px;
       margin-top: 5px;
     }
   }
 }
+.selected {
+  > #selected {
+    background-color: $color-theme;
+  }
+}
+.navBar {
+  text-align: center;
+  font-size: 22px;
+  padding: 14px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffae12;
+  color: #000;
+  > .leftIcon {
+    width: 40px;
+    height: 24px;
+  }
+  > .default {
+    width: 40px;
+    height: 24px;
+  }
+  > .rightIcon {
+    color: red;
+    font-size: 14px;
+  }
+}
 ::v-deep {
+  .navBar > .leftIcon {
+    fill: #000;
+  }
   .label > .littleLabel {
-    width: 36px;
-    height: 36px;
-    padding: 3px;
+    width: 48px;
+    height: 48px;
+    padding: 6px;
     font-size: 34px;
     vertical-align: middle;
     border-radius: 20%;
