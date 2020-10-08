@@ -6,11 +6,11 @@
     <div class="notes">
       <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" />
     </div>
-    <Tags class="overflow" />
+    <Tags class="overflow" @update:arr="onUpdateTags" />
     <Tabs
       :value.sync="type"
       :data-source="recordTypeList"
-      :distance.sync="distance"
+      :distance="distance"
     />
   </Layout>
 </template>
@@ -34,7 +34,6 @@ export default class Money extends Vue {
     return this.$store.state.recordList;
   }
   distance = 0;
-  h = document.body.clientHeight / 2;
   type = "-";
   record: RecordItem = {
     tags: [],
@@ -47,7 +46,11 @@ export default class Money extends Vue {
     this.$store.commit("fetchRecords");
   }
   onUpdateNotes(value: string) {
+    console.log(value);
     this.record.notes = value;
+  }
+  onUpdateTags(arr: string[]) {
+    this.record.tags = [...this.record.tags, ...arr];
   }
   saveRecord() {
     this.$store.commit("createRecord", this.record);

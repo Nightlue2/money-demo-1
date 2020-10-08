@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     currentTag: undefined,
+    showList: [],
   } as RootState,
   mutations: {
     // setCurrentTag(state, id: string) {
@@ -42,6 +43,12 @@ const store = new Vuex.Store({
         "医疗",
         "转账",
       ];
+    },
+    updateShowList(state, arr) {
+      const temp: { [x: string]: any } = {}; //ts对象包含属性的声明方法
+      state.showList.forEach((x) => (temp[x] = x));
+      arr.forEach((x: string) => (temp[x] = x));
+      state.showList = Object.keys(temp);
     },
     // updateTag(state, payload: { id: string; name: string }) {
     //   const { id, name } = payload;

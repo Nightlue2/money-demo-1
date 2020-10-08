@@ -3,12 +3,16 @@
     <div class="navBar">
       <Icon name="back" class="leftIcon" @click.native="goBack"></Icon>
       <span class="title">{{ tip }}</span>
-      <button class="default" :class="{ rightIcon: finish !== '' }">
+      <button
+        class="default"
+        :class="{ rightIcon: finish !== '' }"
+        @click="showTag()"
+      >
         {{ finish }}
       </button>
     </div>
     <div class="labelList">
-      <button
+      <div
         class="label"
         v-for="tagName in tags"
         :key="tagName.index"
@@ -19,7 +23,7 @@
           class="labelNote"
           >{{ tagName }}</span
         >
-      </button>
+      </div>
       <button class="label" @click="createTag">
         <Icon name="添加" class="littleLabel" />
         <span class="labelNote">添加</span>
@@ -74,6 +78,9 @@ export default class Labels extends mixins(TagHelper) {
       return "";
     }
   }
+  goBack() {
+    this.$router.back();
+  }
   beforeCreate() {
     this.$store.commit("fetchTags");
   }
@@ -84,6 +91,9 @@ export default class Labels extends mixins(TagHelper) {
     } else {
       this.selectedTags.push(tag);
     }
+  }
+  showTag() {
+    this.$store.commit("updateShowList", this.selectedTags);
   }
   // select($event: MouseEvent) {
   //   if ($event.target) {
@@ -140,14 +150,15 @@ export default class Labels extends mixins(TagHelper) {
       outline: none;
       border: none;
     }
-
+    &:hover {
+      cursor: pointer;
+    }
     width: 25%;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
     padding-top: 32px;
-    cursor: pointer;
     > .labelNote {
       font-size: 12px;
       margin-top: 5px;
@@ -169,6 +180,9 @@ export default class Labels extends mixins(TagHelper) {
   justify-content: space-between;
   background-color: #ffae12;
   color: #000;
+  .title {
+    vertical-align: baseline;
+  }
   > .leftIcon {
     width: 40px;
     height: 24px;
@@ -178,8 +192,12 @@ export default class Labels extends mixins(TagHelper) {
     height: 24px;
   }
   > .rightIcon {
-    color: red;
-    font-size: 14px;
+    color: #fff;
+    font-size: 15px;
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(156, 152, 144);
+    }
   }
 }
 ::v-deep {

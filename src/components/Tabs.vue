@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="tabs" :class="{ [classPrefix + '-tabs']: classPrefix }">
+    <ul class="tabs">
       <li
         :class="liClass(item)"
         @click="select(item)"
@@ -24,14 +24,14 @@ type DataSourceItem = { text: string; value: string };
 @Component
 export default class Tabs extends Vue {
   @Prop(String) readonly value!: string;
-  @Prop(String) classPrefix?: string;
+  @Prop(Number) readonly distance!: number;
+  // @Prop(String) classPrefix?: string;
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
-  @Prop({ type: String, default: "64px" }) height!: string;
-  @Prop(Number) distance!: number;
+  // @Prop({ type: String, default: "64px" }) height!: string;
 
   liClass(item: DataSourceItem) {
     return {
-      [this.classPrefix + "-tabs-item"]: this.classPrefix,
+      // [this.classPrefix + "-tabs-item"]: this.classPrefix,
       selected: item.value === this.value,
     };
   }

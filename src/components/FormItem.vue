@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <label class="formItem">
-      <Icon class="name" name="备注" />
-      <input
-        type="text"
-        :value="value"
-        @input="onValueChanged($event.target.value)"
-        :placeholder="this.placeholder"
-      />
-    </label>
-  </div>
+  <label class="formItem">
+    <Icon class="name" name="备注" />
+    <input
+      type="text"
+      :value="value"
+      @input="onValueChanged($event.target.value)"
+      :placeholder="this.placeholder"
+    />
+  </label>
 </template>
 <script lang="ts">
 import Vue from "vue";
