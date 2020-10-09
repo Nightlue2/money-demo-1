@@ -2,7 +2,7 @@
   <div>
     <ul class="tabs">
       <li
-        :class="liClass(item)"
+        :class="{selected:item.value === type}"
         @click="select(item)"
         v-for="item in dataSource"
         :key="item.value"
@@ -19,24 +19,44 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList";
 type DataSourceItem = { text: string; value: string };
 @Component
 export default class Tabs extends Vue {
-  @Prop(String) readonly value!: string;
-  @Prop(Number) readonly distance!: number;
+  // @Prop(String) value!: string;
   // @Prop(String) classPrefix?: string;
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
   // @Prop({ type: String, default: "64px" }) height!: string;
-
-  liClass(item: DataSourceItem) {
-    return {
-      // [this.classPrefix + "-tabs-item"]: this.classPrefix,
-      selected: item.value === this.value,
-    };
-  }
+  distance = 0;
+  type = "-";
+  recordTypeList = recordTypeList;
+  // liClass(item: DataSourceItem) {
+  //   return {
+  //     // [this.classPrefix + "-tabs-item"]: this.classPrefix,
+  //     'selected'? item.value === this.value,
+  //   };
+  // }
   select(item: DataSourceItem) {
-    this.$emit("update:value", item.value);
+    this.type = item.value;
+    console.log('我传给你这个：'+item.value);
+    this.$emit("update:type", item.value);
+  }
+  @Watch("type")
+  onTypeChange(newVal: string, oldVal: string) {
+    let newIndex = 0,
+      oldIndex = 0;
+    for (let i = 0; i < recordTypeList.length; i++) {
+      if (recordTypeList[i].value === newVal) {
+        newIndex = recordTypeList[i].index;
+        continue;
+      }
+      if (recordTypeList[i].value === oldVal) {
+        oldIndex = recordTypeList[i].index;
+        continue;
+      }
+    }
+    this.distance = this.distance + 100 * (newIndex - oldIndex);
   }
 }
 </script>

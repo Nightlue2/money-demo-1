@@ -8,7 +8,7 @@
     </div>
     <Tags class="overflow" @update:arr="onUpdateTags" />
     <Tabs
-      :value.sync="type"
+      @update:type="onUpdateTypes(type)"
       :data-source="recordTypeList"
       :distance="distance"
     />
@@ -33,12 +33,10 @@ export default class Money extends Vue {
     //从store里获取recordList
     return this.$store.state.recordList;
   }
-  distance = 0;
-  type = "-";
   record: RecordItem = {
     tags: [],
     notes: "",
-    type: this.type,
+    type: "undefined",
     amount: 0,
   };
   recordTypeList = recordTypeList;
@@ -52,24 +50,12 @@ export default class Money extends Vue {
   onUpdateTags(arr: string[]) {
     this.record.tags = [...this.record.tags, ...arr];
   }
+  onUpdateTypes(type: string){
+    console.log(type);
+    this.record.type = type;
+  }
   saveRecord() {
     this.$store.commit("createRecord", this.record);
-  }
-  @Watch("type")
-  onTypeChange(newVal: string, oldVal: string) {
-    let newIndex = 0,
-      oldIndex = 0;
-    for (let i = 0; i < recordTypeList.length; i++) {
-      if (recordTypeList[i].value === newVal) {
-        newIndex = recordTypeList[i].index;
-        continue;
-      }
-      if (recordTypeList[i].value === oldVal) {
-        oldIndex = recordTypeList[i].index;
-        continue;
-      }
-    }
-    this.distance = this.distance + 100 * (newIndex - oldIndex);
   }
 }
 </script>

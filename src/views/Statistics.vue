@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs
-      class-prefix="type"
+      :distance="distance"
       :data-source="recordTypeList"
       :value.sync="type"
     />
@@ -23,7 +23,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component,Watch} from "vue-property-decorator";
 import Tabs from "@/components/Tabs.vue";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
@@ -32,6 +32,25 @@ import clone from "@/lib/clone";
   components: { Tabs },
 })
 export default class Statistics extends Vue {
+  type = "-";
+  distance = 0;
+  recordTypeList = recordTypeList;
+  @Watch("type")
+  onTypeChange(newVal: string, oldVal: string) {
+    let newIndex = 0,
+      oldIndex = 0;
+    for (let i = 0; i < recordTypeList.length; i++) {
+      if (recordTypeList[i].value === newVal) {
+        newIndex = recordTypeList[i].index;
+        continue;
+      }
+      if (recordTypeList[i].value === oldVal) {
+        oldIndex = recordTypeList[i].index;
+        continue;
+      }
+    }
+    this.distance = this.distance + 100 * (newIndex - oldIndex);
+  }
   tagString(tags: Tag[]) {
     return tags.length === 0 ? "无" : tags.join(",");
   }
@@ -93,8 +112,6 @@ export default class Statistics extends Vue {
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
-  type = "-";
-  recordTypeList = recordTypeList;
 }
 </script>
 
