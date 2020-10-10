@@ -39,7 +39,6 @@ export default class Tabs extends Vue {
   // }
   select(item: DataSourceItem) {
     this.type = item.value;
-    console.log('我传给你这个：'+item.value);
     this.$emit("update:type", item.value);
   }
   @Watch("type")

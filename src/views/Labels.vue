@@ -2,13 +2,11 @@
   <div class="labelWrapper">
     <div class="navBar">
       <Icon name="back" class="leftIcon" @click.native="goBack"></Icon>
-      <span class="title">{{ tip }}</span>
+      <span class="title">选择标签</span>
       <button
         class="default"
         :class="{ rightIcon: finish !== '' }"
-        @click="showTag()"
       >
-        {{ finish }}
       </button>
     </div>
     <div class="labelList">
@@ -19,15 +17,17 @@
         :class="{ selected: selectedTags.indexOf(tagName) >= 0 }"
         @click="toggle(tagName)"
       >
-        <Icon :name="tagName" class="littleLabel" id="selected" /><span
+        <Icon :name="tagName" class="littleLabel" id="selected" v-if="defaultTags.indexOf(tagName)!==-1"/><Icon :name='randomIcon()' class="littleLabel" id="selected" v-else/><span
           class="labelNote"
-          >{{ tagName }}</span
-        >
+          >{{ tagName }}</span>
       </div>
-      <button class="label" @click="createTag">
+      <button class="label" @click="createTag()">
         <Icon name="添加" class="littleLabel" />
         <span class="labelNote">添加</span>
       </button>
+    </div>
+    <div class="buttonList" v-show="selectedTags.length">
+      <button class="showTag">展示</button>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component,Watch } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
@@ -58,19 +58,10 @@ import Tabs from "@/components/Tabs.vue";
   components: { Button, Tabs },
 })
 export default class Labels extends mixins(TagHelper) {
+  tags = this.$store.state.tagList;
   selectedTags: string[] = [];
-
-  get tags() {
-    //computed写法
-    return this.$store.state.tagList;
-  }
-  get tip() {
-    if (this.selectedTags.length) {
-      return "提交以展示";
-    } else {
-      return "选择至少一项";
-    }
-  }
+  defaultTags = this.$store.state.defaultTags;
+  preparedTags = ['a0','a1','a2','a3','a4','a5','a6','a7','a8']
   get finish() {
     if (this.selectedTags.length) {
       return "完成";
@@ -78,11 +69,17 @@ export default class Labels extends mixins(TagHelper) {
       return "";
     }
   }
+  randomIcon(){
+    return this.preparedTags[Math.floor(Math.random()*9)];
+  }
   goBack() {
     this.$router.back();
   }
   beforeCreate() {
     this.$store.commit("fetchTags");
+  }
+  mounted(){
+    console.log(this.$store.state.tagList);
   }
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
@@ -95,6 +92,8 @@ export default class Labels extends mixins(TagHelper) {
   showTag() {
     this.$store.commit("updateShowList", this.selectedTags);
   }
+
+
   // select($event: MouseEvent) {
   //   if ($event.target) {
   //     if ($event.target.children) {
@@ -108,77 +107,40 @@ export default class Labels extends mixins(TagHelper) {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 @import "~@/assets/style/reset.scss";
-.labelWrapper {
-  height: 100vh;
-}
-.tags {
-  background: white;
-  font-size: 16px;
-  padding-left: 16px;
-  width: 100%;
-  flex: 1;
-  > .tag {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e6e6e6;
-  }
-}
-.createTag {
-  background: #767676;
-  color: white;
-  border-radius: 4px;
-  border: none;
-  height: 40px;
-  padding: 0 16px;
-  &-wrapper {
-    text-align: center;
-    padding: 16px;
-    margin-top: 44-16px;
-  }
-}
-.labelList {
-  display: flex;
-  flex-grow: 1;
-  width: 100%;
-  flex-flow: row wrap;
-  padding: 25px 14px 0px;
-  > .label {
-    &:visited {
-      background-color: transparent;
-      outline: none;
-      border: none;
-    }
-    &:hover {
-      cursor: pointer;
-    }
-    width: 25%;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    padding-top: 32px;
-    > .labelNote {
-      font-size: 12px;
-      margin-top: 5px;
-    }
-  }
-}
-.selected {
-  > #selected {
-    background-color: $color-theme;
-  }
-}
+// .tags {
+//   background: white;
+//   font-size: 16px;
+//   padding-left: 16px;
+//   width: 100%;
+//   flex: 1;
+//   > .tag {
+//     min-height: 44px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     border-bottom: 1px solid #e6e6e6;
+//   }
+// }
+// .createTag {
+//   background: #767676;
+//   color: white;
+//   border-radius: 4px;
+//   border: none;
+//   height: 40px;
+//   padding: 0 16px;
+//   &-wrapper {
+//     text-align: center;
+//     padding: 16px;
+//     margin-top: 44-16px;
+//   }
+// }
 .navBar {
   text-align: center;
-  font-size: 22px;
   padding: 14px 16px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffae12;
+  background-color:#ffbd42;
   color: #000;
   .title {
     vertical-align: baseline;
@@ -200,18 +162,126 @@ export default class Labels extends mixins(TagHelper) {
     }
   }
 }
+.labelList {
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  padding: 25px 14px 0px;
+  align-content: flex-start;
+  > .label {
+    &:visited {
+      background-color: transparent;
+      outline: none;
+      border: none;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    width: 25%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    padding-top: 32px;
+    font-size:30px;
+    > .labelNote {
+      font-size: 12px;
+      margin-top: 5px;
+      color:#767676;
+    }
+  }
+}
+.selected {
+  > #selected {
+    background-color: $color-theme;
+  }
+}
+.buttonList{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background:$color-theme;
+}
+@media (min-width:500px){
+  .labelWrapper{
+    height:100vh;
+    display:flex;
+    flex-flow:column nowrap;
+  }
+  .navBar{
+    font-size: 24px;
+    padding:21px 16px;
+  }
+  .labelList{
+    height:88%;
+    > .label{
+      > .labelNote{
+        font-size: 18px;
+      }
+    }
+  }
+  .buttonList{
+    min-height:1%;
+    font-size:22px;
+    padding:6px 0;
+    flex-grow: 1;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+}
+@media (max-width:500px){
+  .labelWrapper {
+  height: 100vh;
+  display:flex;
+  flex-flow:column nowrap;
+  }
+  .navBar{
+    height: 9%;
+    font-size:20px;
+    width:100%;
+  }
+  .labelList{
+    height:84%;
+    padding:5px 16px;
+    flex-grow:0;
+    overflow-y:scroll;
+    
+  }
+  .buttonList{
+    flex-grow: 1;
+    border-radius:2px;
+    padding:2px 0;
+    font-size:18px;
+  }
+}
 ::v-deep {
   .navBar > .leftIcon {
     fill: #000;
   }
-  .label > .littleLabel {
-    width: 48px;
-    height: 48px;
-    padding: 6px;
-    font-size: 34px;
-    vertical-align: middle;
-    border-radius: 20%;
-    background-color: #ededed;
+  @media(min-width:500px){
+    .label > .littleLabel {
+      width: 56px;
+      height: 56px;
+      padding: 6px;
+      font-size: 36px;
+      vertical-align: middle;
+      border-radius: 20%;
+      background-color: #ededed;
+    }
+}
+  
+  @media(max-width:500px){
+    .label > .littleLabel {
+      width: 48px;
+      height: 48px;
+      padding: 6px;
+      font-size: 34px;
+      vertical-align: middle;
+      border-radius: 20%;
+      background-color: #ededed;
+    }
   }
 }
+  
+
 </style>

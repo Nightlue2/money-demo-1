@@ -11,44 +11,37 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     currentTag: undefined,
-    showList: [],
+    showTagList: [],
+    defaultTags:["餐饮","交通","购物","电影","外卖","健身","水费","电费","旅游","日用品","数码","医疗","转账"]
   } as RootState,
   mutations: {
     // setCurrentTag(state, id: string) {
     //   state.currentTag = state.tagList.filter((t) => t.id === id)[0];
     // },
-    // createTag(state, name: string) {
-    //   const names = state.tagList.map((item) => item.name);
-    //   if (names.indexOf(name) >= 0) {
-    //     window.alert("标签名重复");
-    //   }
+    createTag(state, name: string) {
+      console.log(name);
+      if (state.tagList.indexOf(name) >= 0) {
+        return window.alert("标签名重复");
+      }
+      if(name.split('').indexOf(' ')>=0){
+        return window.alert('标签名不能含有空格');
+      }
+      if(state.tagList.length>33){
+        return window.alert('最多添加20个标签');
+      }
     //   const id = createId().toString();
-    //   state.tagList.push(name);
-    //   store.commit("saveTags");
-    //   alert("添加成功");
-    // },
-    fetchTags(state) {
-      state.tagList = [
-        "餐饮",
-        "交通",
-        "购物",
-        "电影",
-        "外卖",
-        "健身",
-        "水费",
-        "电费",
-        "旅游",
-        "日用品",
-        "数码",
-        "医疗",
-        "转账",
-      ];
+      state.tagList.push(name);
+      store.commit("saveTags");
+      alert("添加成功");
     },
-    updateShowList(state, arr) {
+    fetchTags(state) {
+      state.tagList = JSON.parse(localStorage.getItem('tagList')||'["餐饮","交通","购物","电影","外卖","健身","水费","电费","旅游","日用品","数码","医疗","转账"]');
+    },
+    updateShowTagList(state, arr) {
       const temp: { [x: string]: any } = {}; //ts对象包含属性的声明方法
-      state.showList.forEach((x) => (temp[x] = x));
+      state.showTagList.forEach((x) => (temp[x] = x));
       arr.forEach((x: string) => (temp[x] = x));
-      state.showList = Object.keys(temp);
+      state.showTagList = Object.keys(temp);
     },
     // updateTag(state, payload: { id: string; name: string }) {
     //   const { id, name } = payload;
@@ -80,9 +73,9 @@ const store = new Vuex.Store({
     //     alert("删除失败");
     //   }
     // },
-    // saveTags(state) {
-    //   localStorage.setItem("tagList", JSON.stringify(state.tagList));
-    // },
+    saveTags(state) {
+      localStorage.setItem("tagList", JSON.stringify(state.tagList));
+    },
     createRecord(state, record) {
       const record2: RecordItem = clone(record);
       record2.createdAt = new Date().toISOString();

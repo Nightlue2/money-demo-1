@@ -2,7 +2,8 @@ type RootState = {
   recordList: RecordItem[];
   tagList: string[];
   currentTag?: Tag;
-  showList: Tag[];
+  showTagList: Tag[];
+  defaultTags: string[];
 };
 type RecordItem = {
   tags: Tag[]; //不止一个标签

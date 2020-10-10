@@ -8,9 +8,8 @@
     </div>
     <Tags class="overflow" @update:arr="onUpdateTags" />
     <Tabs
-      @update:type="onUpdateTypes(type)"
+      @update:type="onUpdateTypes"
       :data-source="recordTypeList"
-      :distance="distance"
     />
   </Layout>
 </template>
@@ -51,7 +50,6 @@ export default class Money extends Vue {
     this.record.tags = [...this.record.tags, ...arr];
   }
   onUpdateTypes(type: string){
-    console.log(type);
     this.record.type = type;
   }
   saveRecord() {
