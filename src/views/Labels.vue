@@ -12,21 +12,21 @@
     <div class="labelList">
       <div
         class="label"
-        v-for="tagName in tags"
-        :key="tagName.index"
-        :class="{ selected: selectedTags.indexOf(tagName) >= 0 }"
-        @click="toggle(tagName)"
+        v-for="item in tags"
+        :key="item.tagName"
+        :class="{ selected: selectedTags.indexOf(item.tagName) >= 0 }"
+        @click="toggle(item)"
       >
-        <Icon :name="tagName" class="littleLabel" id="selected" v-if="defaultTags.indexOf(tagName)!==-1"/><Icon :name='randomIcon()' class="littleLabel" id="selected" v-else/><span
+        <Icon :name="item.iconName" class="littleLabel" id="selected"/><span
           class="labelNote"
-          >{{ tagName }}</span>
+          >{{ item.tagName }}</span>
       </div>
-      <button class="label" @click="createTag()">
-        <Icon name="添加" class="littleLabel" />
+      <button class="label" @click="randomCreateTag()">
+        <Icon name="添加" class="littleLabel"/>
         <span class="labelNote">添加</span>
       </button>
     </div>
-    <div class="buttonList" v-show="selectedTags.length">
+    <div class="buttonList" v-show="selectedTags.length" @click="showTag">
       <button class="showTag">展示</button>
     </div>
   </div>
@@ -58,9 +58,11 @@ import Tabs from "@/components/Tabs.vue";
   components: { Button, Tabs },
 })
 export default class Labels extends mixins(TagHelper) {
-  tags = this.$store.state.tagList;
+  get tags(){
+    return this.$store.state.tagList
+  }
   selectedTags: string[] = [];
-  defaultTags = this.$store.state.defaultTags;
+  defaultTags = this.$store.state.defaultTags;//这个变量不会动态绑定
   preparedTags = ['a0','a1','a2','a3','a4','a5','a6','a7','a8']
   get finish() {
     if (this.selectedTags.length) {
@@ -69,8 +71,9 @@ export default class Labels extends mixins(TagHelper) {
       return "";
     }
   }
-  randomIcon(){
-    return this.preparedTags[Math.floor(Math.random()*9)];
+  randomCreateTag(){
+    this.createTag(this.preparedTags[Math.floor(Math.random()*9)]);
+    this.$store.commit("fetchTags");
   }
   goBack() {
     this.$router.back();
@@ -79,20 +82,24 @@ export default class Labels extends mixins(TagHelper) {
     this.$store.commit("fetchTags");
   }
   mounted(){
-    console.log(this.$store.state.tagList);
+    // console.log(this.tags);
   }
-  toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
+  destroyed(){
+    this.$store.commit('saveTags');
+  }
+  toggle(tag: Tag) {
+    const index = this.selectedTags.indexOf(tag.tagName);
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
     } else {
-      this.selectedTags.push(tag);
+      this.selectedTags.push(tag.tagName);
     }
   }
   showTag() {
-    this.$store.commit("updateShowList", this.selectedTags);
+    this.$store.commit("updateShowTagList", this.selectedTags);
+    this.selectedTags = [];
+    this.$store.commit('fetchTags');
   }
-
 
   // select($event: MouseEvent) {
   //   if ($event.target) {
@@ -148,6 +155,9 @@ export default class Labels extends mixins(TagHelper) {
   > .leftIcon {
     width: 40px;
     height: 24px;
+    &:hover{
+      cursor: pointer;
+    }
   }
   > .default {
     width: 40px;
@@ -202,6 +212,7 @@ export default class Labels extends mixins(TagHelper) {
     align-items: center;
     background:$color-theme;
 }
+
 @media (min-width:500px){
   .labelWrapper{
     height:100vh;
@@ -227,7 +238,11 @@ export default class Labels extends mixins(TagHelper) {
     flex-grow: 1;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    &:hover{
+      cursor: pointer;
+    }
   }
+
 }
 @media (max-width:500px){
   .labelWrapper {
