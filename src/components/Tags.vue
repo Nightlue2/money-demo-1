@@ -63,9 +63,6 @@ export default class Tags extends mixins(TagHelper) {
     > .current{
       overflow-y:auto;
       > li{
-        // display:flex;
-        // justify-content: center;
-        // align-items: center;
         width:12%;
         background-color:$color-icon-bg;
         position: relative;
@@ -76,6 +73,9 @@ export default class Tags extends mixins(TagHelper) {
         margin-right:35px;
         margin-bottom:48px;
         border-radius:7px;
+        &:hover{
+          cursor: pointer;
+        }
         > .icon{
           position: absolute;
           margin:auto;
@@ -110,22 +110,16 @@ export default class Tags extends mixins(TagHelper) {
 @media(max-width: 500px){
   .tags{
     display: flex;
-    // padding: 48px 26px 20px;
     padding:17px 25px 0;
     > .current{
       overflow-y:auto;
       overflow-x:hidden;
       > li{
-        // display:flex;
-        // justify-content: center;
-        // align-items: center;
         width:12vw;
         background-color:$color-icon-bg;
         position: relative;
         font-size:34px;
         padding-top:12vw;
-        // padding:0px 20px;
-        // padding-top:12%;
         margin-left:3vw;
         margin-right:3vw;
         margin-bottom:9vw;
@@ -156,7 +150,6 @@ export default class Tags extends mixins(TagHelper) {
         top:104%;
         transform: translateX(-50%);
         text-align: center;
-        
       }
     }
     
@@ -164,10 +157,7 @@ export default class Tags extends mixins(TagHelper) {
 }
 .tags {
   font-size: 14px;
-  
   flex-grow: 1;
-  // display: flex;
-  // flex-direction: row;
   background-color: white;
   > .current {
     display: flex;
@@ -175,19 +165,7 @@ export default class Tags extends mixins(TagHelper) {
     flex-flow: row wrap;
     justify-content: space-between;
     align-content:flex-start;
-    // .setting{
-    //   width:20px;
-    //   height:20px;
-    // }
     > li {
-      // $bg-c: #d9d9d9;
-      // background: $bg-c;
-      // $height: 24px;
-      // height: $height;
-      // line-height: $height; //用于居中，但之后可能不止一行标签
-      // border-radius: $height/2;
-      
-      // padding: 16px;
       &.selected {
         background-color: $color-theme;
       }

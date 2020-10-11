@@ -28,6 +28,9 @@ const store = new Vuex.Store({
       if(state.tagList.length>33){
         return window.alert('最多添加20个标签');
       }
+      if(tagObj.tagName.length>6){
+        return window.alert("长度不能超过6个字");
+      }
       state.tagList.push({"iconName":tagObj.tagId,"tagName":tagObj.tagName});
       store.commit("saveTags");
       alert("添加成功");
