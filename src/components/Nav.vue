@@ -4,10 +4,10 @@
       <Icon name="label" />标签
     </router-link> -->
     <router-link to="/money" class="item" active-class="selected">
-      <Icon name="money" />记账
+      <Icon name="money" /><span class="note">记账</span>
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="chart" />统计
+      <Icon name="chart" /><span class="note">统计</span>
     </router-link>
   </nav>
 </template>
@@ -20,6 +20,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+@media(min-width:500px){
+  .nav{
+    .icon{
+      width:42px;
+      height:42px;
+    }
+    .note{
+      font-size: 16px;
+    }
+  }
+}
+@media(max-width:500px){
+  .nav{
+    .icon{
+      width:32px;
+      height:32px;
+    }
+    
+  }
+}
 .nav {
   border-top: 1px solid #eee;
   display: flex;
@@ -32,10 +52,6 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    > .icon {
-      width: 32px;
-      height: 32px;
-    }
   }
 }
 ::v-deep {

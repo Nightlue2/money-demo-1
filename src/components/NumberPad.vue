@@ -78,7 +78,31 @@ export default class NumberPad extends Vue {
     vertical-align: middle;
   }
 }
-
+@media(min-width:500px){
+  .numberPad{
+    .buttonList{
+      > button{
+        font-size: 22px;
+        height: 85px;
+        &.ok{
+          height:85*2px;
+        }
+      }
+    }
+  }
+}
+@media(max-width:500px){
+  .numberPad{
+    .buttonList{
+      > button{
+        height: 62px;
+        &.ok{
+          height:62*2px;
+        }
+      }
+    }
+  }
+}
 .numberPad {
   .output {
     @extend %clearFix;
@@ -93,14 +117,12 @@ export default class NumberPad extends Vue {
     @extend %clearFix; //相当于将该选择器复制到%x中
     > button {
       width: 25%;
-      height: 62px;
       float: left;
       background: transparent;
       border: none;
       border-radius: 0;
       color: $color-number;
       &.ok {
-        height: 62 * 2px;
         float: right;
       }
       &.zero {

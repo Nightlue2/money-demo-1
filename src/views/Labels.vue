@@ -71,13 +71,6 @@ export default class Labels extends mixins(TagHelper) {
       return "";
     }
   }
-  randomCreateTag(){
-    this.createTag(this.preparedTags[Math.floor(Math.random()*9)]);
-    this.$store.commit("fetchTags");
-  }
-  goBack() {
-    this.$router.back();
-  }
   beforeCreate() {
     this.$store.commit("fetchTags");
   }
@@ -86,6 +79,13 @@ export default class Labels extends mixins(TagHelper) {
   }
   destroyed(){
     this.$store.commit('saveTags');
+  }
+  goBack() {
+    this.$router.back();
+  }
+  randomCreateTag(){
+    this.createTag(this.preparedTags[Math.floor(Math.random()*9)]);
+    this.$store.commit("fetchTags");
   }
   toggle(tag: Tag) {
     const index = this.selectedTags.indexOf(tag.tagName);

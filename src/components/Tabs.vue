@@ -61,6 +61,25 @@ export default class Tabs extends Vue {
 </script>
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+@media (min-width: 500px){
+  .tabs{
+    &-item{
+      height:73px;
+      font-size: 30px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+}
+@media (max-width:500px){
+  .tabs{
+    &-item{
+      height:50px;
+      font-size: 22px;
+    }
+  }
+}
 .tabs {
   display: flex;
   text-align: center;
@@ -72,8 +91,7 @@ export default class Tabs extends Vue {
   &-item {
     width: 25%;
     color: #999;
-    height: 50px;
-    font-size: 22px;
+    
     display: flex;
     align-items: center;
     justify-content: center;

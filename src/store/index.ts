@@ -38,12 +38,23 @@ const store = new Vuex.Store({
     fetchShowTags(state){
       state.showTagList = JSON.parse(localStorage.getItem('showTagList') || '[]');
     },
+    fillInShowTags(state){
+      for(let i=0;i<8;i++){
+        state.showTagList.push(state.tagList.shift()!)
+      }
+    },
     updateShowTagList(state, arr: string[]) {
       //const temp: { [x: string]: any } = {}; ts对象包含属性的声明方法
       const temp = state.tagList.filter(x=>arr.indexOf(x.tagName)!==-1);
       temp.forEach(x=>state.tagList.splice(state.tagList.indexOf(x),1) && state.showTagList.push(x))
       store.commit('saveTags');
       store.commit('saveShowTags');
+    },
+    saveTags(state) {
+      localStorage.setItem("tagList", JSON.stringify(state.tagList));
+    },
+    saveShowTags(state){
+      localStorage.setItem('showTagList',JSON.stringify(state.showTagList));
     },
     // updateTag(state, payload: { id: string; name: string }) {
     //   const { id, name } = payload;
@@ -75,12 +86,6 @@ const store = new Vuex.Store({
     //     alert("删除失败");
     //   }
     // },
-    saveTags(state) {
-      localStorage.setItem("tagList", JSON.stringify(state.tagList));
-    },
-    saveShowTags(state){
-      localStorage.setItem('showTagList',JSON.stringify(state.showTagList));
-    },
     createRecord(state, record) {
       const record2: RecordItem = clone(record);
       record2.createdAt = new Date().toISOString();
