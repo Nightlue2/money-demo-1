@@ -80,6 +80,10 @@ export default class NumberPad extends Vue {
 }
 @media(min-width:500px){
   .numberPad{
+    .output{
+          font-size: 34px;
+      min-height: 48px;
+    }
     .buttonList{
       > button{
         font-size: 22px;
@@ -93,11 +97,15 @@ export default class NumberPad extends Vue {
 }
 @media(max-width:500px){
   .numberPad{
+    .output{
+      font-size:30px;
+      min-height:40px;
+    }
     .buttonList{
       > button{
-        height: 62px;
+        height: 60px;
         &.ok{
-          height:62*2px;
+          height:60*2px;
         }
       }
     }
@@ -106,11 +114,10 @@ export default class NumberPad extends Vue {
 .numberPad {
   .output {
     @extend %clearFix;
-    font-size: 34px;
+
     font-family: Consolas, monospace;
     padding: 2px 16px;
     text-align: right;
-    min-height: 48px;
     background-color: #fff;
   }
   .buttonList {

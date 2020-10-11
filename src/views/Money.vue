@@ -6,7 +6,7 @@
     <div class="notes">
       <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" />
     </div>
-    <Tags class="overflow" @update:arr="onUpdateTags" />
+    <Tags class="overflow" @update:tags="onUpdateTags" />
     <Tabs
       @update:type="onUpdateTypes"
       :data-source="recordTypeList"
@@ -35,7 +35,7 @@ export default class Money extends Vue {
   record: RecordItem = {
     tags: [],
     notes: "",
-    type: "undefined",
+    type: "-",
     amount: 0,
   };
   recordTypeList = recordTypeList;
@@ -43,11 +43,10 @@ export default class Money extends Vue {
     this.$store.commit("fetchRecords");
   }
   onUpdateNotes(value: string) {
-    console.log(value);
     this.record.notes = value;
   }
-  onUpdateTags(arr: string[]) {
-    this.record.tags = [...this.record.tags, ...arr];
+  onUpdateTags(tags: string[]) {
+    this.record.tags = [...this.record.tags, ...tags];
   }
   onUpdateTypes(type: string){
     this.record.type = type;
@@ -69,6 +68,6 @@ export default class Money extends Vue {
   background-color: #f5f5f5;
 }
 ::v-deep .overflow {
-  overflow: scroll-y;
+  overflow:auto;
 }
 </style>
