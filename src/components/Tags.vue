@@ -67,7 +67,6 @@ export default class Tags extends mixins(TagHelper) {
         background-color:$color-icon-bg;
         position: relative;
         font-size:42px;
-        // padding:0px 20px;
         padding-top:12%;
         margin-left:35px;
         margin-right:35px;
@@ -152,7 +151,6 @@ export default class Tags extends mixins(TagHelper) {
         text-align: center;
       }
     }
-    
   }
 }
 .tags {

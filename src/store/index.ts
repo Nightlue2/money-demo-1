@@ -90,8 +90,8 @@ const store = new Vuex.Store({
     //   }
     // },
     createRecord(state, record) {
-      const record2: RecordItem = clone(record);
-      record2.createdAt = new Date().toISOString();
+      const record2: RecordItem = clone(record);//传过来的是一个对象
+      record2.createdAt = record2.createdAt || new Date().toISOString();
       state.recordList.push(record2);
       store.commit("saveRecords");
     },

@@ -1,10 +1,10 @@
 <template>
   <Layout>
     <Tabs
-      :distance="distance"
       :data-source="recordTypeList"
-      :value.sync="type"
+      @update:type="onUpdateTypes"
     />
+    <div class="chart-wrapper" ref="chartWrapper"><Chart class="chart" :options="chartOptions"/></div>
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -27,29 +27,17 @@ import { Component,Watch} from "vue-property-decorator";
 import Tabs from "@/components/Tabs.vue";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
+import Chart from "@/components/Chart.vue";
 import clone from "@/lib/clone";
+import _ from "lodash";
 @Component({
-  components: { Tabs },
+  components: { Tabs,Chart},
 })
 export default class Statistics extends Vue {
   type = "-";
-  distance = 0;
   recordTypeList = recordTypeList;
-  @Watch("type")
-  onTypeChange(newVal: string, oldVal: string) {
-    let newIndex = 0,
-      oldIndex = 0;
-    for (let i = 0; i < recordTypeList.length; i++) {
-      if (recordTypeList[i].value === newVal) {
-        newIndex = recordTypeList[i].index;
-        continue;
-      }
-      if (recordTypeList[i].value === oldVal) {
-        oldIndex = recordTypeList[i].index;
-        continue;
-      }
-    }
-    this.distance = this.distance + 100 * (newIndex - oldIndex);
+  onUpdateTypes(type: string){
+    this.type = type;
   }
   tagString(tags: Tag[]) {
     return tags.length === 0 ? "无" : tags.join(",");
@@ -72,6 +60,30 @@ export default class Statistics extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
+  get keyValueList() {
+      const today = new Date();
+      const array = [];
+      for (let i = 0; i <= 29; i++) {
+        const dateString = dayjs(today)
+          .subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.groupedList, {
+          title: dateString
+        });
+        array.push({
+          key: dateString, value: found ? found.total : 0
+        });
+      }
+      array.sort((a, b) => {
+        if (a.key > b.key) {
+          return 1;
+        } else if (a.key === b.key) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+      return array;
+    }
   get groupedList() {
     const { recordList } = this;
     if (recordList.length === 0) {
@@ -108,6 +120,43 @@ export default class Statistics extends Vue {
       }, 0);
     });
     return result;
+  }
+  get chartOption(){
+    const keys = this.keyValueList.map(item => item.key);
+    const values = this.keyValueList.map(item => item.value);
+    return {
+      grid: {
+        left: 0,
+        right: 0,
+      },
+      xAxis: {
+        type: 'category',
+        data: keys,
+        axisTick: {alignWithLabel: true},
+        axisLine: {lineStyle: {color: '#666'}},
+        axisLabel: {
+          formatter: function (value: string, index: number) {
+            return value.substr(5);
+          }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        show: false
+      },
+      series: [{
+        symbol: 'circle',
+        symbolSize: 12,
+        itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
+        data: values,
+        type: 'line'
+      }],
+      tooltip: {
+        show: true, triggerOn: 'click',
+        position: 'top',
+        formatter: '{c}'
+      }
+    };
   }
   beforeCreate() {
     this.$store.commit("fetchRecords");

@@ -6,18 +6,25 @@
       :value="value"
       @input="onValueChanged($event.target.value)"
       :placeholder="this.placeholder"
+      
     />
+    <input type="date" @input="onDateChanged($event.target.value)" :value="date" class="chooseDate">
   </label>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import dayjs from 'dayjs';
 @Component
 export default class FormItem extends Vue {
   @Prop({ default: "" }) readonly value!: string;
   @Prop() placeholder?: string;
+  @Prop() date!: string;
   onValueChanged(value: string) {
     this.$emit("update:value", value);
+  }
+  onDateChanged(value: any){
+    console.log(value);
   }
 }
 </script>
@@ -31,6 +38,9 @@ export default class FormItem extends Vue {
     }
     .input{
       height:26px;
+    }
+    .chooseDate{
+      width:70px;
     }
   }
   

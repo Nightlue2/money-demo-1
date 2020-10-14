@@ -1,7 +1,7 @@
 <template>
   <div class="labelWrapper">
     <div class="navBar">
-      <Icon name="back" class="leftIcon" @click.native="goBack"></Icon>
+      <Icon name="back" class="leftIcon" @click.native="goBack"/>
       <span class="title">选择标签</span>
       <button
         class="default"
@@ -73,9 +73,6 @@ export default class Labels extends mixins(TagHelper) {
   }
   beforeCreate() {
     this.$store.commit("fetchTags");
-  }
-  mounted(){
-    // console.log(this.tags);
   }
   destroyed(){
     this.$store.commit('saveTags');

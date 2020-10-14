@@ -4,7 +4,7 @@
 
     <!-- :value和@update:value可以合并成.sync -->
     <div class="notes">
-      <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" />
+      <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" :date.sync="record.createdAt"/>
     </div>
     <Tags class="overflow" @update:tags="onUpdateTags" />
     <Tabs
@@ -22,7 +22,7 @@ import FormItem from "@/components/FormItem.vue";
 import Tags from "@/components/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
-
+import dayjs from 'dayjs';
 @Component({
   //ts语法
   components: { Tags, NumberPad, FormItem, Tabs },
@@ -37,6 +37,7 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
+    createdAt:dayjs().format("YYYY-MM-DD")
   };
   recordTypeList = recordTypeList;
   created() {
