@@ -121,7 +121,7 @@ export default class Statistics extends Vue {
     });
     return result;
   }
-  get chartOption(){
+  get chartOptions(){
     const keys = this.keyValueList.map(item => item.key);
     const values = this.keyValueList.map(item => item.value);
     return {
@@ -197,5 +197,14 @@ export default class Statistics extends Vue {
   margin-right: auto;
   margin-left: 16px;
   color: #999;
+}
+.chart {
+    width: 430%;
+    &-wrapper {
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
 }
 </style>

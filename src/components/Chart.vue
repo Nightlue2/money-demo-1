@@ -7,11 +7,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component,Prop,Watch} from 'vue-property-decorator';
-import echarts, { EChartOption,ECharts} from "echarts";
+import echarts, { EChartOption} from "echarts";
 @Component
 export default class Chart extends Vue{
     @Prop() options?: EChartOption
-    chart?: Echarts;
+    chart?: echarts.Echarts=undefined;
     mounted(){
         if(this.options=== undefined){
             return console.error("options为空");
@@ -27,5 +27,7 @@ export default class Chart extends Vue{
 </script>
 
 <style lang="scss" scoped>
-
+.wrapper{
+    height:400px;
+}
 </style>
