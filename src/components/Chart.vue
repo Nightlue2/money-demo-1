@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper" ref="wrapper">
-
     </div>
 </template>
 
@@ -11,7 +10,7 @@ import echarts, { EChartOption} from "echarts";
 @Component
 export default class Chart extends Vue{
     @Prop() options?: EChartOption
-    chart?: echarts.Echarts=undefined;
+    chart?: echarts.ECharts=undefined;
     mounted(){
         if(this.options=== undefined){
             return console.error("options为空");
@@ -28,6 +27,7 @@ export default class Chart extends Vue{
 
 <style lang="scss" scoped>
 .wrapper{
-    height:400px;
+    min-height:280px;
+    max-height:400px;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
 
     <!-- :value和@update:value可以合并成.sync -->
     <div class="notes">
-      <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" :date.sync="record.createdAt"/>
+      <FormItem placeholder="在这里输入备注" @update:value="onUpdateNotes" :date="record.createdAt" @update:date="onUpdateDate"/>
     </div>
-    <Tags class="overflow" @update:tags="onUpdateTags" />
+    <Tags @update:tags="onUpdateTags" class="overflow"/>
     <Tabs
       @update:type="onUpdateTypes"
       :data-source="recordTypeList"
@@ -44,15 +44,24 @@ export default class Money extends Vue {
     this.$store.commit("fetchRecords");
   }
   onUpdateNotes(value: string) {
-    this.record.notes = value;
+    if(value.length<36){
+      this.record.notes = value;
+    }else{
+      this.record.notes = '';
+    }
+
   }
   onUpdateTags(tags: string[]) {
-    this.record.tags = [...this.record.tags, ...tags];
+    this.record.tags =tags;
   }
   onUpdateTypes(type: string){
     this.record.type = type;
   }
+  onUpdateDate(date: string){
+    this.record.createdAt = date
+  }
   saveRecord() {
+    // if(this.record.)
     this.$store.commit("createRecord", this.record);
   }
 }
@@ -68,7 +77,10 @@ export default class Money extends Vue {
   padding: 12px 0;
   background-color: #f5f5f5;
 }
-::v-deep .overflow {
-  overflow:auto;
+ ::v-deep .overflow {
+   &::-webkit-scrollbar{
+     display:none;
+   }
+  overflow-y:auto;
 }
 </style>

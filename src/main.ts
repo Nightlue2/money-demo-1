@@ -17,4 +17,6 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
-document.documentElement.scrollTop = 999999;
+// document.documentElement.scrollTop = document.documentElement.scrollHeight;
+// window.alert(document.documentElement.scrollTop);
+// document.documentElement.scrollTo(0,document.documentElement.scrollHeight)

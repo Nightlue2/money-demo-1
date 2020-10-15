@@ -91,7 +91,6 @@ export default class Tabs extends Vue {
   &-item {
     width: 25%;
     color: #999;
-    
     display: flex;
     align-items: center;
     justify-content: center;

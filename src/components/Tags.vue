@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component} from "vue-property-decorator";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
 import Icon from '@/components/Icon.vue';
@@ -60,8 +60,8 @@ export default class Tags extends mixins(TagHelper) {
   .tags{
     display: flex;
     padding: 48px 26px 20px;
+    // overflow-y:auto;
     > .current{
-      overflow-y:auto;
       > li{
         width:12%;
         background-color:$color-icon-bg;

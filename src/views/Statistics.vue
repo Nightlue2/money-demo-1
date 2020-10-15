@@ -1,24 +1,30 @@
 <template>
-  <Layout>
-    <Tabs
+  <Layout class="content">
+    <Tabs class="tab-wrapper"
       :data-source="recordTypeList"
       @update:type="onUpdateTypes"
     />
-    <div class="chart-wrapper" ref="chartWrapper"><Chart class="chart" :options="chartOptions"/></div>
-    <ol>
-      <li v-for="(group, index) in groupedList" :key="index">
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="chartOptions"/>
+    </div>
+    <ol v-if="groupedList.length>0" class="list-wrapper">
+      <li v-for="(group, index) in groupedList" :key="index" >
         <h3 class="title">
-          {{ beautify(group.title) }} <span>￥{{ group.total }}</span>
+          {{ beautify(group.title) }} 
+          <span>￥{{ group.total }}</span>
         </h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
-            <span>{{ tagString(item.tags) }}</span>
-            <span class="notes">{{ item.notes }}</span>
-            <span>￥{{ item.amount }} </span>
+            <span class="label">{{ tagString(item.tags) }}</span>
+            <span class="notes">
+              {{ item.notes }}
+            </span>
+            <span>￥{{ item.amount }}</span>
           </li>
         </ol>
       </li>
     </ol>
+    <div class='no-content' v-else>当前类型无记录</div>
   </Layout>
 </template>
 <script lang="ts">
@@ -38,6 +44,10 @@ export default class Statistics extends Vue {
   recordTypeList = recordTypeList;
   onUpdateTypes(type: string){
     this.type = type;
+  }
+  mounted(){
+    const chart = this.$refs.chartWrapper as HTMLDivElement;
+    chart.scrollLeft = chart.scrollWidth;
   }
   tagString(tags: Tag[]) {
     return tags.length === 0 ? "无" : tags.join(",");
@@ -91,10 +101,12 @@ export default class Statistics extends Vue {
     }
     const newList = clone(recordList)
       .filter((r: RecordItem) => r.type === this.type)
-      .sort(
-        (a: RecordItem, b: RecordItem) =>
-          dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
-      );
+    if(newList.length===0){
+      return [];
+    }
+    newList.sort((a: RecordItem, b: RecordItem) =>
+        dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
     type Result = { title: string; total?: number; items: RecordItem[] }[];
     const result: Result = [
       {
@@ -133,11 +145,12 @@ export default class Statistics extends Vue {
         type: 'category',
         data: keys,
         axisTick: {alignWithLabel: true},
-        axisLine: {lineStyle: {color: '#666'}},
+        axisLine: {lineStyle: {color: '#fdd087'}},
         axisLabel: {
           formatter: function (value: string, index: number) {
             return value.substr(5);
-          }
+          },
+          fontSize:12
         }
       },
       yAxis: {
@@ -147,12 +160,13 @@ export default class Statistics extends Vue {
       series: [{
         symbol: 'circle',
         symbolSize: 12,
-        itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
+        itemStyle: {borderWidth: 1, color: '#ffb01f', borderColor: '#ffb01f'},
         data: values,
         type: 'line'
       }],
       tooltip: {
         show: true, triggerOn: 'click',
+        backgroundColor:'#ffb01f',
         position: 'top',
         formatter: '{c}'
       }
@@ -164,8 +178,36 @@ export default class Statistics extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+
+
 ::v-deep {
+  @media( min-width:500px){
+    .tab-wrapper{
+      width:100%;
+      height: 84px;
+    }
+    .chart-wrapper{
+      width:100%;
+      flex-shrink: 1;
+    }
+    .list-wrapper{
+      width:100%;
+    }
+  }
+  @media( max-width:500px){
+    .tab-wrapper{
+      width:100%;
+      height: 84px;
+    }
+    .chart-wrapper{
+      width:100%;
+      flex-shrink: 1;
+    }
+    .list-wrapper{
+      width:100%;
+    }
+  }
   .type-tabs-item {
     background: #c4c4c4;
     &.selected {
@@ -177,6 +219,22 @@ export default class Statistics extends Vue {
   }
   .interval-tabs-item {
     height: 48px;
+  }
+}
+::v-deep .content{
+  display:flex;
+  flex-flow:row wrap;
+  overflow:hidden;
+}
+.no-content{
+  text-align:center;
+}
+.list-wrapper{
+  height:380px;
+  overflow-y:auto;
+  flex-grow:1;
+  &::-webkit-scrollbar{
+    display: none;
   }
 }
 %item {
@@ -193,10 +251,17 @@ export default class Statistics extends Vue {
   background: white;
   @extend %item;
 }
+.chart{
+  display:inline-block;
+  white-space: nowrap;
+}
 .notes {
+  display:inline-block;
   margin-right: auto;
   margin-left: 16px;
-  color: #999;
+  color: rgb(78, 78, 78);
+  line-height: 25px;
+  white-space: nowrap;
 }
 .chart {
     width: 430%;
