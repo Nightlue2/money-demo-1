@@ -12,12 +12,9 @@ const store = new Vuex.Store({
     tagList: [],
     currentTag: undefined,
     showTagList: [],
-    defaultTags:[{"iconName":"餐饮","tagName":"餐饮"},{"iconName":"交通","tagName":"交通"},{"iconName":"购物","tagName":"购物"},{"iconName":"电影","tagName":"电影"},{"iconName":"外卖","tagName":"外卖"},{"iconName":"健身","tagName":"健身"},{"iconName":"水费","tagName":"水费"},{"iconName":"电费","tagName":"电费"},{"iconName":"旅游","tagName":"旅游"},{"iconName":"日用品","tagName":"日用品"},{"iconName":"数码","tagName":"数码"},{"iconName":"医疗","tagName":"医疗"},{"iconName":"转账","tagName":"转账"}]
+    defaultTags:[{"iconName":"餐饮","tagName":"餐饮"},{"iconName":"交通","tagName":"交通"},{"iconName":"购物","tagName":"购物"},{"iconName":"电影","tagName":"电影"},{"iconName":"外卖","tagName":"外卖"},{"iconName":"健身","tagName":"健身"},{"iconName":"水费","tagName":"水费"},{"iconName":"电费","tagName":"电费"},{"iconName":"旅游","tagName":"旅游"},{"iconName":"日用品","tagName":"日用品"},{"iconName":"数码","tagName":"数码"},{"iconName":"医疗","tagName":"医疗"},{"iconName":"转账","tagName":"转账"},{"iconName":"休闲","tagName":"休闲"},{"iconName":"话费","tagName":"话费"},{"iconName":"公益","tagName":"公益"},{"iconName":"投资","tagName":"投资"},{"iconName":"红包","tagName":"红包"},{"iconName":"工资","tagName":"工资"}]
   } as RootState,
   mutations: {
-    // setCurrentTag(state, id: string) {
-    //   state.currentTag = state.tagList.filter((t) => t.id === id)[0];
-    // },
     createTag(state: RootState, tagObj: {tagName: string;tagId: string}) {
       if ((state.tagList.map(x=>x.tagName).indexOf(tagObj.tagName) !==-1) || (state.showTagList.map(x=>x.tagName).indexOf(tagObj.tagName) !==-1)) {
         return window.alert("标签名重复");
@@ -59,36 +56,6 @@ const store = new Vuex.Store({
     saveShowTags(state){
       localStorage.setItem('showTagList',JSON.stringify(state.showTagList));
     },
-    // updateTag(state, payload: { id: string; name: string }) {
-    //   const { id, name } = payload;
-    //   const idList = state.tagList.map((item) => item.id);
-    //   if (idList.indexOf(id) >= 0) {
-    //     const names = state.tagList.map((item) => item.name);
-    //     if (names.indexOf(name) >= 0) {
-    //       alert("标签名重复");
-    //     } else {
-    //       const tag = state.tagList.filter((item) => item.id === id)[0];
-    //       tag.name = name;
-    //       store.commit("saveTags");
-    //     }
-    //   }
-    // },
-    // removeTag(state, id: string) {
-    //   let index = -1;
-    //   for (let i = 0; i < state.tagList.length; i++) {
-    //     if (state.tagList[i].id === id) {
-    //       index = i;
-    //       break;
-    //     }
-    //   }
-    //   if (index >= 0) {
-    //     state.tagList.splice(index, 1);
-    //     store.commit("saveTags");
-    //     router.back();
-    //   } else {
-    //     alert("删除失败");
-    //   }
-    // },
     createRecord(state, record) {
       const record2: RecordItem = clone(record);//传过来的是一个对象
       record2.createdAt = record2.createdAt || new Date().toISOString();
