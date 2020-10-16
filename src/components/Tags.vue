@@ -60,7 +60,6 @@ export default class Tags extends mixins(TagHelper) {
   .tags{
     display: flex;
     padding: 48px 26px 20px;
-    // overflow-y:auto;
     > .current{
       > li{
         width:12%;
@@ -95,18 +94,19 @@ export default class Tags extends mixins(TagHelper) {
       }
       .note{
         width:100%;
-          font-size:16px;
-          position:absolute;
-          left:50%;
-          top:103%;
-          transform: translateX(-50%);
-          text-align: center;
-        }
+        font-size:16px;
+        position:absolute;
+        left:50%;
+        top:103%;
+        transform: translateX(-50%);
+        text-align: center;
+      }
     }
     
   }
 }
 @media(max-width: 500px){
+  $li-width:calc((100vw - 32vw - 50px) / 4);
   .tags{
     display: flex;
     padding:17px 25px 0;
@@ -114,13 +114,13 @@ export default class Tags extends mixins(TagHelper) {
       overflow-y:auto;
       overflow-x:hidden;
       > li{
-        width:12vw;
+        width:$li-width;
         background-color:$color-icon-bg;
         position: relative;
         font-size:34px;
-        padding-top:12vw;
-        margin-left:3vw;
-        margin-right:3vw;
+        padding-top:$li-width;
+        margin-left:4vw;
+        margin-right:4vw;
         margin-bottom:9vw;
         border-radius:7px;
         > .icon{
@@ -161,7 +161,7 @@ export default class Tags extends mixins(TagHelper) {
     display: flex;
     flex-grow:1;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-content:flex-start;
     > li {
       &.selected {

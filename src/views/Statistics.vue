@@ -195,12 +195,15 @@ export default class Statistics extends Vue {
     flex-shrink: 1;
     width:100%;
   }
-  @media( min-width:500px){
+  @media(min-width:500px){
     .tab-wrapper{
       height: 84px;
     }
     .list-wrapper{
       height:calc(100vh - 84px - 280px - 71px - 5px);
+    }
+    .note{
+      line-height: 24px;
     }
   }
   @media( max-width:500px){
@@ -209,6 +212,9 @@ export default class Statistics extends Vue {
     }
     .list-wrapper{
       height:calc(100vh - 61px - 280px - 54px);
+    }
+    .note{
+      line-height:25px;
     }
   }
   .content{
@@ -249,7 +255,6 @@ export default class Statistics extends Vue {
   margin-right: auto;
   margin-left: 16px;
   color: rgb(78, 78, 78);
-  line-height: 25px;
   white-space: nowrap;
 }
 .chart {
