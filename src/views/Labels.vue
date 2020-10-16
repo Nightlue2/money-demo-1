@@ -30,21 +30,6 @@
       <button class="showTag">展示</button>
     </div>
   </div>
-
-  <!-- <div class="tags">
-       <router-link
-        class="tag"
-        :to="`/labels/edit/${tag.id}`"
-        v-for="tag in tags"
-        :key="tag.id"
-      >
-        <span>{{ tag.name }}</span>
-        <Icon name="guide" />
-      </router-link> -->
-  <!-- </div> -->
-  <!-- <div class="createTag-wrapper">
-      <Button class="createTag" >新增标签</Button>
-    </div> -->
 </template>
 
 <script lang="ts">
@@ -97,47 +82,12 @@ export default class Labels extends mixins(TagHelper) {
     this.selectedTags = [];
     this.$store.commit('fetchTags');
   }
-
-  // select($event: MouseEvent) {
-  //   if ($event.target) {
-  //     if ($event.target.children) {
-  //       console.log($event.target.children[0]);
-  //     }
-  //   }
-  // }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 @import "~@/assets/style/reset.scss";
-// .tags {
-//   background: white;
-//   font-size: 16px;
-//   padding-left: 16px;
-//   width: 100%;
-//   flex: 1;
-//   > .tag {
-//     min-height: 44px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     border-bottom: 1px solid #e6e6e6;
-//   }
-// }
-// .createTag {
-//   background: #767676;
-//   color: white;
-//   border-radius: 4px;
-//   border: none;
-//   height: 40px;
-//   padding: 0 16px;
-//   &-wrapper {
-//     text-align: center;
-//     padding: 16px;
-//     margin-top: 44-16px;
-//   }
-// }
 .navBar {
   text-align: center;
   padding: 14px 16px;
@@ -294,6 +244,4 @@ export default class Labels extends mixins(TagHelper) {
     }
   }
 }
-  
-
 </style>

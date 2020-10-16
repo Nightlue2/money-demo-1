@@ -24,19 +24,10 @@ import recordTypeList from "@/constants/recordTypeList";
 type DataSourceItem = { text: string; value: string };
 @Component
 export default class Tabs extends Vue {
-  // @Prop(String) value!: string;
-  // @Prop(String) classPrefix?: string;
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
-  // @Prop({ type: String, default: "64px" }) height!: string;
   distance = 0;
   type = "-";
   recordTypeList = recordTypeList;
-  // liClass(item: DataSourceItem) {
-  //   return {
-  //     // [this.classPrefix + "-tabs-item"]: this.classPrefix,
-  //     'selected'? item.value === this.value,
-  //   };
-  // }
   select(item: DataSourceItem) {
     this.type = item.value;
     this.$emit("update:type", item.value);
