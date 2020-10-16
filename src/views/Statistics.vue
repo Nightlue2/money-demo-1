@@ -7,24 +7,28 @@
     <div class="chart-wrapper" ref="chartWrapper">
       <Chart class="chart" :options="chartOptions"/>
     </div>
-    <ol v-if="groupedList.length>0" class="list-wrapper">
-      <li v-for="(group, index) in groupedList" :key="index" >
-        <h3 class="title">
-          {{ beautify(group.title) }} 
-          <span>￥{{ group.total }}</span>
-        </h3>
-        <ol>
-          <li v-for="item in group.items" :key="item.id" class="record">
-            <span class="label">{{ tagString(item.tags) }}</span>
-            <span class="notes">
-              {{ item.notes }}
-            </span>
-            <span>￥{{ item.amount }}</span>
-          </li>
-        </ol>
-      </li>
-    </ol>
-    <div class='no-content' v-else>当前类型无记录</div>
+    <div class="list-wrapper">
+      <ol v-if="groupedList.length>0" >
+        <li v-for="(group, index) in groupedList" :key="index" >
+          <h3 class="title">
+            {{ beautify(group.title) }} 
+            <span>￥{{ group.total }}</span>
+          </h3>
+          <ol>
+            <li v-for="item in group.items" :key="item.id" class="record">
+              <span class="label">{{ tagString(item.tags) }}</span>
+              <span class="notes">
+                {{ item.notes }}
+              </span>
+              <span>￥{{ item.amount }}</span>
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <div class='no-content' v-else>当前类型无记录</div>
+    </div>
+    
+    
   </Layout>
 </template>
 <script lang="ts">
@@ -50,7 +54,7 @@ export default class Statistics extends Vue {
     chart.scrollLeft = chart.scrollWidth;
   }
   tagString(tags: Tag[]) {
-    return tags.length === 0 ? "无" : tags.join(",");
+    return tags.length === 0 ? "无" : tags.join("，");
   }
   beautify(string: string) {
     const day = dayjs(string);
@@ -126,11 +130,12 @@ export default class Statistics extends Vue {
         });
       }
     }
-    result.map((group) => {
+    result.forEach((group) => {
       group.total = group.items.reduce((sum, item) => {
         return sum + item.amount;
       }, 0);
     });
+    result.forEach(item=>item["items"].reverse())
     return result;
   }
   get chartOptions(){
@@ -179,60 +184,48 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
-
 ::v-deep {
+  .tab-wrapper{
+    width:100%;
+  }
+  .chart-wrapper{
+    width:100%;
+  }
+  .list-wrapper{
+    flex-shrink: 1;
+    width:100%;
+  }
   @media( min-width:500px){
     .tab-wrapper{
-      width:100%;
       height: 84px;
     }
-    .chart-wrapper{
-      width:100%;
-      flex-shrink: 1;
-    }
     .list-wrapper{
-      width:100%;
+      height:calc(100vh - 84px - 280px - 71px - 5px);
     }
   }
   @media( max-width:500px){
     .tab-wrapper{
-      width:100%;
-      height: 84px;
-    }
-    .chart-wrapper{
-      width:100%;
-      flex-shrink: 1;
+      height: 61px;
     }
     .list-wrapper{
-      width:100%;
+      height:calc(100vh - 61px - 280px - 54px);
     }
   }
-  .type-tabs-item {
-    background: #c4c4c4;
-    &.selected {
-      background: white;
-      &::after {
-        display: none;
-      }
-    }
+  .content{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    overflow:hidden;
   }
-  .interval-tabs-item {
-    height: 48px;
-  }
-}
-::v-deep .content{
-  display:flex;
-  flex-flow:row wrap;
-  overflow:hidden;
 }
 .no-content{
   text-align:center;
+  margin:0 auto;
+  flex-grow: 1;
 }
 .list-wrapper{
-  height:380px;
   overflow-y:auto;
-  flex-grow:1;
   &::-webkit-scrollbar{
     display: none;
   }
@@ -251,10 +244,6 @@ export default class Statistics extends Vue {
   background: white;
   @extend %item;
 }
-.chart{
-  display:inline-block;
-  white-space: nowrap;
-}
 .notes {
   display:inline-block;
   margin-right: auto;
@@ -264,12 +253,14 @@ export default class Statistics extends Vue {
   white-space: nowrap;
 }
 .chart {
-    width: 430%;
-    &-wrapper {
-      overflow: auto;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+  width: 430%;
+  display:inline-block;
+  white-space: nowrap;
+  &-wrapper {
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
     }
+  }
 }
 </style>

@@ -22,10 +22,9 @@ export default class FormItem extends Vue {
   value?: string = '';
   onValueChanged(value: string) {
     if(value.length>35){
-      alert('备注不能超过35个字！');
-      this.value = '';
       (this.$refs.input as HTMLInputElement).value = '';
-      console.log(this.value);
+      this.value = '';
+      alert('备注不能超过35个字！');
     }else{
       this.$emit("update:value", value);
     }

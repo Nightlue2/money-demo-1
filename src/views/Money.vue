@@ -24,14 +24,9 @@ import { Component, Watch } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from 'dayjs';
 @Component({
-  //ts语法
   components: { Tags, NumberPad, FormItem, Tabs },
 })
 export default class Money extends Vue {
-  get recordList() {
-    //从store里获取recordList
-    return this.$store.state.recordList;
-  }
   record: RecordItem = {
     tags: [],
     notes: "",
@@ -43,13 +38,15 @@ export default class Money extends Vue {
   created() {
     this.$store.commit("fetchRecords");
   }
+  get recordList() {
+    return this.$store.state.recordList;
+  }
   onUpdateNotes(value: string) {
     if(value.length<36){
       this.record.notes = value;
     }else{
       this.record.notes = '';
     }
-
   }
   onUpdateTags(tags: string[]) {
     this.record.tags =tags;
@@ -61,7 +58,6 @@ export default class Money extends Vue {
     this.record.createdAt = date
   }
   saveRecord() {
-    // if(this.record.)
     this.$store.commit("createRecord", this.record);
   }
 }
