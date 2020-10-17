@@ -2,6 +2,7 @@
 /* 上面是取消git commit时eslint报错的方法之一 */
 const path = require("path");
 module.exports = {
+  publicPath:process.env.NODE_ENV === 'production' ? '/XCMoney/' : '/',
   lintOnSave: false,
   chainWebpack: (config) => {
     const icon1 = path.resolve(__dirname, "src/assets/icon-svg");
